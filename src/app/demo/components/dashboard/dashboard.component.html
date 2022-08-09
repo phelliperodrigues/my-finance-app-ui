@@ -1,0 +1,285 @@
+    <div class="grid">
+       
+        <div class="col-12 lg:col-12 xl:col-12">
+
+            <div class="card">
+                <p-fieldset legend="Receber" [toggleable]="true" class="line-height-3 m-0">
+                    <div class="grid">
+                        <div class="col-12 lg:col-6 xl:col-4">
+                            <div class="card mb-0">
+                                <div class="flex justify-content-between mb-3">
+                                    <div>
+                                        <span class="block text-500 font-medium mb-3">Total Receita Mês</span>
+                                        <div class="text-900 font-medium text-xl">R$ 25.000,00</div>
+                                    </div>
+                                    <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                        <i class="pi pi-calendar-plus text-cyan-500 text-xl"></i>
+                                    </div>
+                                </div>
+                                <span class="text-green-500 font-medium">+10%  </span>
+                                <span class="text-500">ultimo mês</span>
+                            </div>
+                        </div>
+                        <div class="col-12 lg:col-6 xl:col-4">
+                            <div class="card mb-0">
+                                <div class="flex justify-content-between mb-3">
+                                    <div>
+                                        <span class="block text-500 font-medium mb-3">Recebido</span>
+                                        <div class="text-900 font-medium text-xl">R$ 12.000,00</div>
+                                    </div>
+                                    <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                        <i class="pi pi-plus text-cyan-500 text-xl"></i>
+                                    </div>
+                                </div>
+                                <span class="text-green-500 font-medium">2 </span>
+                                <span class="text-500">lançamento recebido</span>
+                            </div>
+                        </div>
+                        <div class="col-12 lg:col-6 xl:col-4">
+                            <div class="card mb-0">
+                                <div class="flex justify-content-between mb-3">
+                                    <div>
+                                        <span class="block text-500 font-medium mb-3">À Receber</span>
+                                        <div class="text-900 font-medium text-xl">R$ 13.000,00</div>
+                                    </div>
+                                    <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                        <i class="pi pi-plus-circle text-cyan-500 text-xl"></i>
+                                    </div>
+                                </div>
+                                <span class="text-green-500 font-medium">1 </span>
+                                <span class="text-500">lançamentos à receber</span>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+
+                <p-fieldset legend="Pagar" [toggleable]="true" class="line-height-3 m-0">
+                    <div class="grid">
+                        
+
+                        <div class="col-12 lg:col-6 xl:col-4">
+                            <div class="card mb-0">
+                                <div class="flex justify-content-between mb-3">
+                                    <div>
+                                        <span class="block text-500 font-medium mb-3">Total Despesa Mês</span>
+                                        <div class="text-900 font-medium text-xl">R$ 14.000,00</div>
+                                    </div>
+                                    <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                        <i class="pi pi-calendar-minus text-red-500 text-xl"></i>
+                                    </div>
+                                </div>
+                                <span class="text-pink-500 font-medium">-6%  </span>
+                                <span class="text-500">ultimo mês</span>
+                            </div>
+                        </div>
+                        <div class="col-12 lg:col-6 xl:col-4">
+                            <div class="card mb-0">
+                                <div class="flex justify-content-between mb-3">
+                                    <div>
+                                        <span class="block text-500 font-medium mb-3">Pago</span>
+                                        <div class="text-900 font-medium text-xl">R$ 7.500,00</div>
+                                    </div>
+                                    <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                        <i class="pi pi-minus text-red-500 text-xl"></i>
+                                    </div>
+                                </div>
+                                <span class="text-green-500 font-medium">3 </span>
+                                <span class="text-500">lançamentos pagos</span>
+                            </div>
+                        </div>
+                        <div class="col-12 lg:col-6 xl:col-4">
+                            <div class="card mb-0">
+                                <div class="flex justify-content-between mb-3">
+                                    <div>
+                                        <span class="block text-500 font-medium mb-3">À Pagar</span>
+                                        <div class="text-900 font-medium text-xl">R$ 6.500,00</div>
+                                    </div>
+                                    <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                        <i class="pi pi-minus-circle text-red-500 text-xl"></i>
+                                    </div>
+                                </div>
+                                <span class="text-green-500 font-medium">6 </span>
+                                <span class="text-500">lançamento à pagar</span>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+                <p-fieldset legend="Resultado" [toggleable]="true" class="line-height-3 m-0">
+                    <div class="grid">
+                        <div class="col-12 lg:col-6 xl:col-6">
+                            <div class="card mb-0">
+                                <div class="flex justify-content-between mb-3">
+                                    <div>
+                                        <span class="block text-500 font-medium mb-3">Diferença Atual Mês</span>
+                                        <div class="text-900 font-medium text-xl">R$ 4.500,00</div>
+                                    </div>
+                                    <div class="flex align-items-center justify-content-center bg-green-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                        <i class="pi pi-wallet text-green-500 text-xl"></i>
+                                    </div>
+                                </div>
+                                <span class="text-green-500 font-medium"> </span>
+                                <span class="text-500">Diferença entre recebidos e pagamentos do mês até hoje</span>
+                            </div>
+                        </div>
+                
+                        <div class="col-12 lg:col-6 xl:col-6">
+                            <div class="card mb-0">
+                                <div class="flex justify-content-between mb-3">
+                                    <div>
+                                        <span class="block text-500 font-medium mb-3">Acomulado</span>
+                                        <div class="text-900 font-medium text-xl">R$ 164.500,00</div>
+                                    </div>
+                                    <div class="flex align-items-center justify-content-center bg-green-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                        <i class="pi pi-dollar text-green-500 text-xl"></i>
+                                    </div>
+                                </div>
+                                <span class="text-green-500 font-medium"> </span>
+                                <span class="text-500">Total acomulado em poupança</span>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+            </div>
+        </div>
+        <div class="col-12 xl:col-6">
+            <div class="card flex flex-column align-items-center">
+                <h5 class="text-left w-full">Categorias</h5>
+                <p-chart type="pie" [data]="pieData" [options]="pieOptions" [style]="{'width': '50%'}"></p-chart>
+            </div>
+        </div>
+        <div class="col-12 xl:col-6">
+            <div class="card flex flex-column align-items-center">
+                <h5 class="text-left w-full">Custo Fixo x Variavél</h5>
+                <p-chart type="doughnut" [data]="doughnutData" [options]="doughnutOptions" [style]="{'width': '50%'}"></p-chart>
+            </div>
+        </div>
+        
+        <div class="col-12 xl:col-12">
+            <div class="card">
+                <h5>Lançamentos Por Mês</h5>
+                <p-table [value]="products" [paginator]="true" [rows]="10" responsiveLayout="stack" [responsive]="true" [scrollable]="true" >
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th  style="width: 120px;" pFrozenColumn>Nome</th>
+                            <th  style="">Janeiro <p-sortIcon field="valueJan"></p-sortIcon></th>
+                            <th  style="">Fevereiro <p-sortIcon field="valueFev"></p-sortIcon></th>
+                            <th  style="">Março <p-sortIcon field="valueMar"></p-sortIcon></th>
+                            <th  style="">Abril <p-sortIcon field="valueAbr"></p-sortIcon></th>
+                            <th  style="">Maio <p-sortIcon field="valueMai"></p-sortIcon></th>
+                            <th  style="">Junho <p-sortIcon field="valueJun"></p-sortIcon></th>
+                            <th  style="">Julho <p-sortIcon field="valueJul"></p-sortIcon></th>
+                            <th  style="">Agosto <p-sortIcon field="valueAgo"></p-sortIcon></th>
+                            <th  style="">Setembro <p-sortIcon field="valueSet"></p-sortIcon></th>
+                            <th  style="">Outubro <p-sortIcon field="valueOut"></p-sortIcon></th>
+                            <th  style="">Novembro <p-sortIcon field="valueNov"></p-sortIcon></th>
+                            <th  style="">Dezembro <p-sortIcon field="valueDez"></p-sortIcon></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product let-columns="columns">
+                        <tr>
+                            <td  style="width: 120px;" pFrozenColumn>{{product.name}}</td>
+                            <td  style=""><span class="p-column-title">Janeiro</span>{{product.valueJan | currency:'BRL'}}</td>
+                            <td  style=""><span class="p-column-title">Fevereiro</span>{{product.valueFev | currency:'BRL'}}</td>
+                            <td  style=""><span class="p-column-title">Março</span>{{product.valueMar | currency:'BRL'}}</td>
+                            <td  style=""><span class="p-column-title">Abril</span>{{product.valueAbr | currency:'BRL'}}</td>
+                            <td  style=""><span class="p-column-title">Maio</span>{{product.valueMai | currency:'BRL'}}</td>
+                            <td  style=""><span class="p-column-title">Junho</span>{{product.valueJun | currency:'BRL'}}</td>
+                            <td  style=""><span class="p-column-title">Julho</span>{{product.valueJul | currency:'BRL'}}</td>
+                            <td  style=""><span class="p-column-title">Agosto</span>{{product.valueAgo | currency:'BRL'}}</td>
+                            <td  style=""><span class="p-column-title">Setembro</span>{{product.valueSet | currency:'BRL'}}</td>
+                            <td  style=""><span class="p-column-title">Outubro</span>{{product.valueOut | currency:'BRL'}}</td>
+                            <td  style=""><span class="p-column-title">Novembro</span>{{product.valueNov | currency:'BRL'}}</td>
+                            <td  style=""><span class="p-column-title">Dezembro</span>{{product.valueDez | currency:'BRL'}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+
+        <div class="col-12 xl:col-12">
+            <div class="card">
+                <h5>Diferença entre entrada e saída</h5>
+                <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+            </div>
+
+            <div class="card">
+                <div class="flex align-items-center justify-content-between mb-4">
+                    <h5>Linha do tempo</h5>
+                </div>
+
+                <span class="block text-600 font-medium mb-3">Hoje</span>
+                <ul class="p-0 mx-0 mt-0 mb-4 list-none">
+                    <li class="flex align-items-center py-2">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-download text-xl text-orange-500"></i>
+                        </div>
+                        <span class="text-900 line-height-3">Phellipe Rodrigues
+                            <span class="text-700 line-height-3">Pagou FINANCIAMENTO APARTAMENTO <span class="text-blue-500 font-medium">R$ 2.800,00</span></span>
+                        </span>
+                    </li>
+                    <li class="flex align-items-center py-2 border-bottom-1 surface-border">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-download text-xl text-orange-500"></i>
+                        </div>
+                        <span class="text-900 line-height-3">Phellipe Rodrigues
+                            <span class="text-700"> pagou VEÍCULO <span class="text-blue-500">R$ 500,00</span></span>
+                        </span>
+                    </li>
+                    <li class="flex align-items-center py-2 border-bottom-1 surface-border">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-download text-xl text-orange-500"></i>
+                        </div>
+                        <span class="text-900 line-height-3">Patrícia Rodrigues
+                            <span class="text-700"> pagou FACULDADE <span class="text-blue-500">R$ 300,00</span></span>
+                        </span>
+                    </li>
+                    <li class="flex align-items-center py-2 border-bottom-1 surface-border">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-download text-xl text-orange-500"></i>
+                        </div>
+                        <span class="text-900 line-height-3">Patrícia Rodrigues
+                            <span class="text-700"> pagou CARTÃO BRADESCO <span class="text-blue-500">R$ 1.200,00</span></span>
+                        </span>
+                    </li>
+                    <li class="flex align-items-center py-2 border-bottom-1 surface-border">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-blue-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-dollar text-xl text-blue-500"></i>
+                        </div>
+                        <span class="text-900 line-height-3">Patrícia Rodrigues
+                            <span class="text-700"> recebeu SALARIO <span class="text-blue-500">R$ 6.000,00</span></span>
+                        </span>                  
+                    </li>
+                </ul>
+
+                <span class="block text-600 font-medium mb-3">01/Agosto</span>
+                <ul class="p-0 m-0 list-none">
+                   
+                    <li class="flex align-items-center py-2 border-bottom-1 surface-border">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-download text-xl text-orange-500"></i>
+                        </div>
+                        <span class="text-900 line-height-3">Phellipe Rodrigues
+                            <span class="text-700"> pagou ENEL <span class="text-blue-500">R$ 200,00</span></span>
+                        </span>
+                    </li>
+                    <li class="flex align-items-center py-2 border-bottom-1 surface-border">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-download text-xl text-orange-500"></i>
+                        </div>
+                        <span class="text-900 line-height-3">Phellipe Rodrigues
+                            <span class="text-700"> pagou CARTÃO C6 <span class="text-blue-500">R$ 2.000,00</span></span>
+                        </span>
+                    </li>
+                    <li class="flex align-items-center py-2 border-bottom-1 surface-border">
+                        <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-blue-100 border-circle mr-3 flex-shrink-0">
+                            <i class="pi pi-dollar text-xl text-blue-500"></i>
+                        </div>
+                        <span class="text-900 line-height-3">Phellipe Rodrigues
+                            <span class="text-700"> recebeu SALARIO <span class="text-blue-500">R$ 6.000,00</span></span>
+                        </span>                  
+                    </li>
+                </ul>
+            </div>
+    </div>
+</div>
+
