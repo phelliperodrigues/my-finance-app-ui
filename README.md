@@ -1,5 +1,7 @@
 # Nosso Controle Financeiro - Frontend
 
+![](https://raw.githubusercontent.com/phelliperodrigues/my-finance-app-ui/main/presentation.gif)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.4.
 
 ## Development server
