@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import { Product } from '../../demo/api/product';
-import { ProductService } from '../../demo/service/product.service';
+import { Product } from '../../api/product';
+import { ProductService } from '../../service/product.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -35,6 +35,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     doughnutData: any;
     doughnutOptions: any;
+    loading: boolean = false;
+
+    monthDate: Date = new Date();
 
     constructor(
         private productService: ProductService,
@@ -47,12 +50,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.initChart();
+        this.loading = true;
         this.productService.getProductsSmall().then((data) => {
-            console.log(data);
-            console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-
             this.products = data;
         });
+        this.loading = false;
 
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
