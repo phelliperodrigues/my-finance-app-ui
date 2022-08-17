@@ -19,6 +19,48 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                                 ).then((m) => m.DashboardModule),
                         },
                         {
+                            path: 'revenues',
+                            loadChildren: () =>
+                                import(
+                                    './components/launch/revenue/revenue.module'
+                                ).then((m) => m.RevenueModule),
+                        },
+                        {
+                            path: 'expenses',
+                            loadChildren: () =>
+                                import(
+                                    './components/launch/expense/expense.module'
+                                ).then((m) => m.ExpenseModule),
+                        },
+                        {
+                            path: 'register/provider/company',
+                            loadChildren: () =>
+                                import(
+                                    './components/provider/company/company.module'
+                                ).then((m) => m.CompanyProviderModule),
+                        },
+                        {
+                            path: 'register/provider/debit',
+                            loadChildren: () =>
+                                import(
+                                    './components/provider/debit/debit.module'
+                                ).then((m) => m.DebitModule),
+                        },
+                        {
+                            path: 'register/provider/category',
+                            loadChildren: () =>
+                                import(
+                                    './components/provider/category/category.module'
+                                ).then((m) => m.CategoryProviderModule),
+                        },
+                        {
+                            path: 'register/payer/category',
+                            loadChildren: () =>
+                                import(
+                                    './components/payer/category/category.module'
+                                ).then((m) => m.CategoryPayerModule),
+                        },
+                        {
                             path: 'uikit',
                             loadChildren: () =>
                                 import(

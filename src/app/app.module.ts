@@ -1,5 +1,6 @@
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CalendarModule } from 'primeng/calendar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
@@ -10,6 +11,7 @@ import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { AppLayoutModule } from './layout/app.layout.module';
+import { LaunchService } from './service/launch-service';
 import { ProductService } from './service/product.service';
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
@@ -23,6 +25,8 @@ import { ProductService } from './service/product.service';
         NodeService,
         PhotoService,
         ProductService,
+        CalendarModule,
+        LaunchService,
     ],
     bootstrap: [AppComponent],
 })

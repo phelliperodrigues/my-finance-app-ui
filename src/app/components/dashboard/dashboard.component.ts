@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import { Product } from '../../api/product';
-import { ProductService } from '../../service/product.service';
+import { MouthLauch } from '../../api/mouth-launch';
+import { LaunchService } from '../../service/launch-service';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -21,8 +21,8 @@ import { ProductService } from '../../service/product.service';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
     items!: MenuItem[];
-
-    products!: Product[];
+    cols!: any[];
+    monthLaunchs!: MouthLauch[];
 
     chartData: any;
 
@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     monthDate: Date = new Date();
 
     constructor(
-        private productService: ProductService,
+        private launchService: LaunchService,
         public layoutService: LayoutService
     ) {
         this.subscription = this.layoutService.configUpdate$.subscribe(() => {
@@ -51,14 +51,53 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.initChart();
         this.loading = true;
-        this.productService.getProductsSmall().then((data) => {
-            this.products = data;
+        this.launchService.getLaunchOfMounth().then((data) => {
+            this.monthLaunchs = data;
         });
         this.loading = false;
 
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
             { label: 'Remove', icon: 'pi pi-fw pi-minus' },
+        ];
+
+        this.cols = [
+            { field: 'name', header: 'Descrição' },
+            {
+                field: 'month1',
+                header: this.getMonthText(-3),
+                money: true,
+            },
+            {
+                field: 'month2',
+                header: this.getMonthText(-2),
+                money: true,
+            },
+            {
+                field: 'month3',
+                header: this.getMonthText(-1),
+                money: true,
+            },
+            {
+                field: 'monthActual',
+                header: this.getMonthText(0),
+                money: true,
+            },
+            {
+                field: 'month4',
+                header: this.getMonthText(1),
+                money: true,
+            },
+            {
+                field: 'month5',
+                header: this.getMonthText(2),
+                money: true,
+            },
+            {
+                field: 'month5',
+                header: this.getMonthText(3),
+                money: true,
+            },
         ];
     }
 
@@ -203,6 +242,39 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         if (this.subscription) {
             this.subscription.unsubscribe();
+        }
+    }
+
+    getMonthText(number: any) {
+        var date = new Date();
+        date.setMonth(date.getMonth() + number);
+        switch (date.getMonth()) {
+            case 0:
+                return 'Jan/' + date.getUTCFullYear();
+            case 1:
+                return 'Fev/' + date.getUTCFullYear();
+            case 2:
+                return 'Mar/' + date.getUTCFullYear();
+            case 3:
+                return 'Abr/' + date.getUTCFullYear();
+            case 4:
+                return 'Mai/' + date.getUTCFullYear();
+            case 5:
+                return 'Jun/' + date.getUTCFullYear();
+            case 6:
+                return 'Jul/' + date.getUTCFullYear();
+            case 7:
+                return 'Ago/' + date.getUTCFullYear();
+            case 8:
+                return 'Set/' + date.getUTCFullYear();
+            case 9:
+                return 'Out/' + date.getUTCFullYear();
+            case 10:
+                return 'Nov/' + date.getUTCFullYear();
+            case 11:
+                return 'Dez/' + date.getUTCFullYear();
+            default:
+                return 'Mês Invalido';
         }
     }
 }

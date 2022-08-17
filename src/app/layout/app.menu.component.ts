@@ -47,17 +47,17 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Empresas',
                                 icon: 'pi pi-fw pi-sitemap',
-                                routerLink: ['/register/supplier/company'],
+                                routerLink: ['/register/provider/company'],
                             },
                             {
                                 label: 'Dividas',
                                 icon: 'pi pi-fw pi-shopping-cart',
-                                routerLink: ['/register/supplier/debit'],
+                                routerLink: ['/register/provider/debit'],
                             },
                             {
                                 label: 'Categorias de Despesas',
                                 icon: 'pi pi-fw pi-tag',
-                                routerLink: ['/register/supplier/category'],
+                                routerLink: ['/register/provider/category'],
                             },
                         ],
                     },
@@ -68,7 +68,7 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Categoria de Receita',
                                 icon: 'pi pi-fw pi-tags',
-                                routerLink: ['/register/issuer/category'],
+                                routerLink: ['/register/payer/category'],
                             },
                         ],
                     },
