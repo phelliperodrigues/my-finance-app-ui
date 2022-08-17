@@ -1,6 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { MouthLauch } from '../../api/mouth-launch';
 import { LaunchService } from '../../service/launch-service';
@@ -19,47 +17,32 @@ import { LaunchService } from '../../service/launch-service';
         `,
     ],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
-    items!: MenuItem[];
+export class DashboardComponent implements OnInit {
     cols!: any[];
     monthLaunchs!: MouthLauch[];
 
     chartData: any;
 
     chartOptions: any;
+    categoryExpenseData: any;
+    typeExpenseData: any;
 
-    subscription!: Subscription;
-
-    pieData: any;
-    pieOptions: any;
-
-    doughnutData: any;
-    doughnutOptions: any;
     loading: boolean = false;
 
     monthDate: Date = new Date();
 
     constructor(
-        private launchService: LaunchService,
+        private service: LaunchService,
         public layoutService: LayoutService
-    ) {
-        this.subscription = this.layoutService.configUpdate$.subscribe(() => {
-            this.initChart();
-        });
-    }
+    ) {}
 
     ngOnInit() {
         this.initChart();
         this.loading = true;
-        this.launchService.getLaunchOfMounth().then((data) => {
+        this.service.getLaunchOfMonth().then((data) => {
             this.monthLaunchs = data;
         });
         this.loading = false;
-
-        this.items = [
-            { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-            { label: 'Remove', icon: 'pi pi-fw pi-minus' },
-        ];
 
         this.cols = [
             { field: 'name', header: 'Descrição' },
@@ -177,72 +160,60 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 },
             },
         };
-
-        this.pieData = {
-            labels: ['CASA', 'FINANCEIRO', 'CARTÃO', 'ALIMENTAÇÃO'],
-            datasets: [
-                {
-                    data: [1000.0, 2500.0, 1702.0, 500.0],
-                    backgroundColor: [
-                        documentStyle.getPropertyValue('--yellow-500'),
-                        documentStyle.getPropertyValue('--blue-500'),
-                        documentStyle.getPropertyValue('--pink-500'),
-                        documentStyle.getPropertyValue('--green-500'),
-                    ],
-                    hoverBackgroundColor: [
-                        documentStyle.getPropertyValue('--yellow-400'),
-                        documentStyle.getPropertyValue('--blue-400'),
-                        documentStyle.getPropertyValue('--red-400'),
-                        documentStyle.getPropertyValue('--green-400'),
-                    ],
-                },
-            ],
-        };
-
-        this.pieOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                        color: textColor,
+        this.service.getSpendingByCategory().then((data) => {
+            let bgColor = this.selectChartColor(data.length);
+            let hoverBgColor = this.hoverColor(bgColor);
+            this.categoryExpenseData = {
+                labels: data.map((item) => item.name),
+                datasets: [
+                    {
+                        data: data.map((item) => item.value),
+                        backgroundColor: bgColor,
+                        hoverBackgroundColor: hoverBgColor,
                     },
-                },
-            },
-        };
+                ],
+            };
+        });
 
-        this.doughnutData = {
-            labels: ['FIXO', 'VARIAVEL'],
-            datasets: [
-                {
-                    data: [10000.0, 4000.0],
-                    backgroundColor: [
-                        documentStyle.getPropertyValue('--yellow-500'),
-                        documentStyle.getPropertyValue('--red-500'),
-                    ],
-                    hoverBackgroundColor: [
-                        documentStyle.getPropertyValue('--yellow-400'),
-                        documentStyle.getPropertyValue('--red-400'),
-                    ],
-                },
-            ],
-        };
-
-        this.doughnutOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                        color: textColor,
+        this.service.getSpedingByType().then((data) => {
+            let bgColor = this.selectChartColor(data.length);
+            let hoverBgColor = this.hoverColor(bgColor);
+            this.typeExpenseData = {
+                labels: data.map((item) => item.name),
+                datasets: [
+                    {
+                        data: data.map((item) => item.value),
+                        backgroundColor: bgColor,
+                        hoverBackgroundColor: hoverBgColor,
                     },
-                },
-            },
-        };
+                ],
+            };
+        });
     }
-
-    ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+    hoverColor(bgColor: string[]): string[] {
+        let hoverBgColor: string[] = [];
+        bgColor.forEach((color) => {
+            hoverBgColor.push(color + '88');
+        });
+        return hoverBgColor;
+    }
+    selectChartColor(length: number): string[] {
+        let customColours: string[] = [];
+        if (length > 0) {
+            for (let index = 0; index < length; index++) {
+                let randomColor = this.getRandomColor();
+                if (randomColor.length < 6) {
+                    randomColor = this.getRandomColor();
+                }
+                customColours.push('#' + randomColor);
+            }
         }
+        console.log(customColours);
+
+        return customColours;
+    }
+    getRandomColor(): string {
+        return Math.floor(Math.random() * 16777215).toString(16);
     }
 
     getMonthText(number: any) {

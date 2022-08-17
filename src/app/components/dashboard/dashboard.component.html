@@ -240,8 +240,7 @@
             <h5 class="text-left w-full">Categorias</h5>
             <p-chart
                 type="pie"
-                [data]="pieData"
-                [options]="pieOptions"
+                [data]="categoryExpenseData"
                 [style]="{ width: '100%' }"
                 [responsive]="true"
             ></p-chart>
@@ -249,11 +248,10 @@
     </div>
     <div class="col-12 xl:col-6">
         <div class="card flex flex-column align-items-center">
-            <h5 class="text-left w-full">Custo Fixo x Variavél</h5>
+            <h5 class="text-left w-full">Custo Fixo vs Variavél</h5>
             <p-chart
                 type="doughnut"
-                [data]="doughnutData"
-                [options]="doughnutOptions"
+                [data]="typeExpenseData"
                 [style]="{ width: '100%' }"
             >
             </p-chart>

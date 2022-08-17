@@ -1,0 +1,28 @@
+{
+	"data": [
+        {
+            "name": "Categoria 1",
+            "value": "1000.12"
+        },
+        {
+            "name": "Categoria 2",
+            "value": "101.12"
+        },
+        {
+            "name": "Categoria 3",
+            "value": "2002.12"
+        },
+        {
+            "name": "Categoria 4",
+            "value": "13.12"
+        },
+        {
+            "name": "Categoria 5",
+            "value": "504.12"
+        },
+        {
+            "name": "Categoria 6",
+            "value": "805.12"
+        }
+    ]
+}

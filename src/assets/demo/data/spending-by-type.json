@@ -1,0 +1,12 @@
+{
+	"data": [
+        {
+            "name": "Fixa",
+            "value": "1000.12"
+        },
+        {
+            "name": "Variavel",
+            "value": "1500.12"
+        }
+    ]
+}
