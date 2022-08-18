@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import colorLib from '@kurkle/color';
 import * as moment from 'moment';
+import { Resume } from 'src/app/api/resume';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { MouthLauch } from '../../api/mouth-launch';
-import { LaunchService } from '../../service/launch-service';
+import { DashboardService } from '../../service/dashboard-service';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -22,33 +23,37 @@ import { LaunchService } from '../../service/launch-service';
 export class DashboardComponent implements OnInit {
     cols!: any[];
     monthLaunchs!: MouthLauch[];
-
     chartDiffByMonth: any;
-    chartResultByMonth: any;
+    chartDiffByMonthFuture: any;
 
+    chartResultByMonth: any;
     chartDiffByMonthOption: any;
     chartResultByMonthOption: any;
     categoryExpenseData: any;
     categoryExpenseOptions: any;
     typeExpenseData: any;
-
     loading: boolean = false;
-
     monthDate: Date = new Date();
+    resume: Resume = {};
 
     constructor(
-        private service: LaunchService,
+        private service: DashboardService,
         public layoutService: LayoutService
     ) {}
 
     ngOnInit() {
+        this.getResume(this.monthDate);
         this.initChart();
-        this.loading = true;
-        this.service.getLaunchOfMonth().then((data) => {
-            this.monthLaunchs = data;
+        this.getMonthLaunchers();
+        this.buildColumns();
+    }
+    getResume(monthDate: Date) {
+        this.service.getResume(monthDate).then((data) => {
+            this.resume = data;
         });
-        this.loading = false;
+    }
 
+    private buildColumns() {
         this.cols = [
             { field: 'name', header: 'Descrição' },
             {
@@ -89,6 +94,14 @@ export class DashboardComponent implements OnInit {
         ];
     }
 
+    private getMonthLaunchers() {
+        this.service.getLaunchOfMonth().then((data) => {
+            this.loading = true;
+            this.monthLaunchs = data;
+            this.loading = false;
+        });
+    }
+
     initChart() {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
@@ -99,6 +112,7 @@ export class DashboardComponent implements OnInit {
             documentStyle.getPropertyValue('--surface-border');
 
         this.buildChartDiffByMonth(documentStyle);
+        this.buildChartDiffByMonthFuture(documentStyle);
         this.buildChartMonthResult(documentStyle);
         this.buildOptionsByChartBar(
             textColor,
@@ -226,6 +240,53 @@ export class DashboardComponent implements OnInit {
                         borderColor:
                             documentStyle.getPropertyValue('--pink-300'),
                         tension: 0.4,
+                    },
+                ],
+            };
+        });
+    }
+
+    private buildChartDiffByMonthFuture(documentStyle: CSSStyleDeclaration) {
+        this.service.getLaunchFuture().then((data) => {
+            this.chartDiffByMonthFuture = {
+                labels: data
+                    .filter((launch) => launch.type === 'DESPESA')
+                    .map((dado) =>
+                        moment(dado.date)
+                            .locale('pt-br')
+                            .format('MM/YYYY')
+                            .toUpperCase()
+                    ),
+                datasets: [
+                    {
+                        label: 'Entradas',
+                        data: data
+                            .filter((launch) => launch.type === 'RECEITA')
+                            .map((dado) => dado.value),
+                        fill: false,
+                        // backgroundColor:
+                        //     documentStyle.getPropertyValue('--teal-200'),
+                        borderColor:
+                            documentStyle.getPropertyValue('--purple-400'),
+                        tension: 0.2,
+                        pointStyle: 'circle',
+                        pointRadius: 7,
+                        pointHoverRadius: 15,
+                    },
+                    {
+                        label: 'Saídas',
+                        data: data
+                            .filter((launch) => launch.type === 'DESPESA')
+                            .map((dado) => dado.value),
+                        fill: false,
+                        // backgroundColor:
+                        //     documentStyle.getPropertyValue('--orange-200'),
+                        borderColor:
+                            documentStyle.getPropertyValue('--pink-400'),
+                        tension: 0.2,
+                        pointStyle: 'circle',
+                        pointRadius: 7,
+                        pointHoverRadius: 15,
                     },
                 ],
             };

@@ -1,0 +1,64 @@
+{
+	"data": [
+        {
+            "type": "DESPESA",
+            "value": 1100.00,
+            "date": "2022-09-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 1000.00,
+            "date": "2022-10-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 800.00,
+            "date": "2022-11-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 1400.00,
+            "date": "2022-12-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 1200.00,
+            "date": "2023-01-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 1100.00,
+            "date": "2023-02-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1300.00,
+            "date": "2022-09-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1100.00,
+            "date": "2022-10-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1200.00,
+            "date": "2022-11-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1000.00,
+            "date": "2022-12-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1500.00,
+            "date": "2023-01-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1300.00,
+            "date": "2023-02-01"
+        }
+    ]
+}

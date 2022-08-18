@@ -1,4 +1,4 @@
-export interface LaunchLastYear {
+export interface LaunchByMonth {
     type?: string;
     value?: number;
     date?: Date;

@@ -11,7 +11,7 @@ import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { AppLayoutModule } from './layout/app.layout.module';
-import { LaunchService } from './service/launch-service';
+import { DashboardService } from './service/dashboard-service';
 import { ProductService } from './service/product.service';
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
@@ -26,7 +26,7 @@ import { ProductService } from './service/product.service';
         PhotoService,
         ProductService,
         CalendarModule,
-        LaunchService,
+        DashboardService,
     ],
     bootstrap: [AppComponent],
 })

@@ -1,0 +1,12 @@
+{
+    "data": {
+        "monthRevenue": 25000.00,
+        "monthExpense": 14000.00,
+        "received": 12000.00,
+        "payment": 7500.00,
+        "toReceive": 13000.00,
+        "toPay": 6500.00,
+        "receivedTotal": 200000.00,
+        "diffMonth": 11000.00
+    }
+}
