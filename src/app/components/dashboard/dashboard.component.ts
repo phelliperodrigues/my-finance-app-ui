@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import colorLib from '@kurkle/color';
+import * as moment from 'moment';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { MouthLauch } from '../../api/mouth-launch';
 import { LaunchService } from '../../service/launch-service';
@@ -21,10 +23,13 @@ export class DashboardComponent implements OnInit {
     cols!: any[];
     monthLaunchs!: MouthLauch[];
 
-    chartData: any;
+    chartDiffByMonth: any;
+    chartResultByMonth: any;
 
-    chartOptions: any;
+    chartDiffByMonthOption: any;
+    chartResultByMonthOption: any;
     categoryExpenseData: any;
+    categoryExpenseOptions: any;
     typeExpenseData: any;
 
     loading: boolean = false;
@@ -93,45 +98,30 @@ export class DashboardComponent implements OnInit {
         const surfaceBorder =
             documentStyle.getPropertyValue('--surface-border');
 
-        this.chartData = {
-            labels: [
-                'Janeiro',
-                'Feveiro',
-                'Março',
-                'Abril',
-                'Maio',
-                'Junho',
-                'Julho',
-            ],
-            datasets: [
-                {
-                    label: 'Entradas',
-                    data: [
-                        22000.0, 22500.0, 21800.0, 25000.0, 32000.0, 22100.0,
-                        22950.0,
-                    ],
-                    fill: false,
-                    backgroundColor:
-                        documentStyle.getPropertyValue('--green-700'),
-                    borderColor: documentStyle.getPropertyValue('--green-700'),
-                    tension: 0.4,
-                },
-                {
-                    label: 'Saídas',
-                    data: [
-                        12000.0, 18500.0, 21000.0, 15000.0, 22000.0, 19100.0,
-                        18950.0,
-                    ],
-                    fill: false,
-                    backgroundColor:
-                        documentStyle.getPropertyValue('--red-300'),
-                    borderColor: documentStyle.getPropertyValue('--red-300'),
-                    tension: 0.4,
-                },
-            ],
-        };
+        this.buildChartDiffByMonth(documentStyle);
+        this.buildChartMonthResult(documentStyle);
+        this.buildOptionsByChartBar(
+            textColor,
+            textColorSecondary,
+            surfaceBorder
+        );
+        this.buildOptionsByChartResult(
+            textColor,
+            textColorSecondary,
+            surfaceBorder
+        );
 
-        this.chartOptions = {
+        this.buildOptionsByCharts(textColor);
+        this.buildChartByCategory();
+        this.buildChartByType();
+    }
+
+    private buildOptionsByChartBar(
+        textColor: string,
+        textColorSecondary: string,
+        surfaceBorder: string
+    ) {
+        this.chartDiffByMonthOption = {
             plugins: {
                 legend: {
                     labels: {
@@ -160,6 +150,174 @@ export class DashboardComponent implements OnInit {
                 },
             },
         };
+    }
+
+    private buildOptionsByChartResult(
+        textColor: string,
+        textColorSecondary: string,
+        surfaceBorder: string
+    ) {
+        this.chartResultByMonthOption = {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: textColor,
+                    },
+                    toolTip: {
+                        enabled: false,
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: textColorSecondary,
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false,
+                    },
+                },
+                y: {
+                    ticks: {
+                        color: textColorSecondary,
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false,
+                    },
+                },
+            },
+        };
+    }
+
+    private buildChartDiffByMonth(documentStyle: CSSStyleDeclaration) {
+        this.service.getLaunchLastYear().then((data) => {
+            this.chartDiffByMonth = {
+                labels: data
+                    .filter((launch) => launch.type === 'DESPESA')
+                    .map((dado) =>
+                        moment(dado.date)
+                            .locale('pt-br')
+                            .format('MM/YYYY')
+                            .toUpperCase()
+                    ),
+                datasets: [
+                    {
+                        label: 'Entradas',
+                        data: data
+                            .filter((launch) => launch.type === 'RECEITA')
+                            .map((dado) => dado.value),
+                        fill: true,
+                        backgroundColor:
+                            documentStyle.getPropertyValue('--cyan-200'),
+                        borderColor:
+                            documentStyle.getPropertyValue('--cyan-200'),
+                        tension: 0.9,
+                    },
+                    {
+                        label: 'Saídas',
+                        data: data
+                            .filter((launch) => launch.type === 'DESPESA')
+                            .map((dado) => dado.value),
+                        fill: false,
+                        backgroundColor:
+                            documentStyle.getPropertyValue('--pink-200'),
+                        borderColor:
+                            documentStyle.getPropertyValue('--pink-300'),
+                        tension: 0.4,
+                    },
+                ],
+            };
+        });
+    }
+    private buildChartMonthResult(documentStyle: CSSStyleDeclaration) {
+        this.service.getResultLastYear().then((data) => {
+            this.chartResultByMonth = {
+                labels: data.map((dado) =>
+                    moment(dado.date)
+                        .locale('pt-br')
+                        .format('MM/YYYY')
+                        .toUpperCase()
+                ),
+                datasets: [
+                    {
+                        label: 'Resultado',
+                        data: data.map((dado) => dado.value),
+                        fill: false,
+                        pointStyle: 'circle',
+                        pointRadius: 10,
+                        pointHoverRadius: 15,
+                        backgroundColor: data.map((dado) => {
+                            if (dado.value > 0 && dado.value < 500) {
+                                return documentStyle.getPropertyValue(
+                                    '--green-200'
+                                );
+                            }
+                            if (dado.value >= 500) {
+                                return documentStyle.getPropertyValue(
+                                    '--green-300'
+                                );
+                            }
+                            if (dado.value < 0 && dado.value > -100) {
+                                return documentStyle.getPropertyValue(
+                                    '--pink-200'
+                                );
+                            } else {
+                                return documentStyle.getPropertyValue(
+                                    '--pink-300'
+                                );
+                            }
+                        }),
+                        borderColor: data.map((dado) => {
+                            if (dado.value > 0 && dado.value < 500) {
+                                return documentStyle.getPropertyValue(
+                                    '--cyan-200'
+                                );
+                            }
+                            if (dado.value >= 500) {
+                                return documentStyle.getPropertyValue(
+                                    '--green-200'
+                                );
+                            }
+                            if (dado.value < 0 && dado.value > -100) {
+                                return documentStyle.getPropertyValue(
+                                    '--pink-200'
+                                );
+                            } else {
+                                return documentStyle.getPropertyValue(
+                                    '--red-200'
+                                );
+                            }
+                        }),
+                        tension: 0.4,
+                    },
+                ],
+            };
+        });
+    }
+    colorize(opaque: boolean) {
+        return (ctx: any) => {
+            const v = ctx.parsed.y;
+            const c =
+                v < -50
+                    ? '#D60000'
+                    : v < 0
+                    ? '#F46300'
+                    : v < 50
+                    ? '#0358B6'
+                    : '#44DE28';
+
+            return opaque ? c : this.transparentize(c, 1 - Math.abs(v / 150));
+        };
+    }
+
+    transparentize(value: string, opacity: number) {
+        var alpha = opacity === undefined ? 0.5 : 1 - opacity;
+        return colorLib(value).alpha(alpha).rgbString();
+    }
+
+    private buildChartByCategory() {
         this.service.getSpendingByCategory().then((data) => {
             let bgColor = this.selectChartColor(data.length);
             let hoverBgColor = this.hoverColor(bgColor);
@@ -174,7 +332,25 @@ export class DashboardComponent implements OnInit {
                 ],
             };
         });
+    }
 
+    private buildOptionsByCharts(textColor: string) {
+        this.categoryExpenseOptions = {
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                        color: textColor,
+                    },
+                    position: 'left',
+                    onHover: this.handleHover,
+                    onLeave: this.handleLeave,
+                },
+            },
+        };
+    }
+
+    private buildChartByType() {
         this.service.getSpedingByType().then((data) => {
             let bgColor = this.selectChartColor(data.length);
             let hoverBgColor = this.hoverColor(bgColor);
@@ -189,6 +365,27 @@ export class DashboardComponent implements OnInit {
                 ],
             };
         });
+    }
+
+    handleHover(evt: any, item: any, legend: any) {
+        legend.chart.data.datasets[0].backgroundColor.forEach(
+            (color: any, index: any, colors: any) => {
+                colors[index] =
+                    index === item.index || color.length === 9
+                        ? color
+                        : color + '4D';
+            }
+        );
+        legend.chart.update();
+    }
+
+    handleLeave(evt: any, item: any, legend: any) {
+        legend.chart.data.datasets[0].backgroundColor.forEach(
+            (color: any, index: any, colors: any) => {
+                colors[index] = color.length === 9 ? color.slice(0, -2) : color;
+            }
+        );
+        legend.chart.update();
     }
     hoverColor(bgColor: string[]): string[] {
         let hoverBgColor: string[] = [];
@@ -208,7 +405,6 @@ export class DashboardComponent implements OnInit {
                 customColours.push('#' + randomColor);
             }
         }
-        console.log(customColours);
 
         return customColours;
     }

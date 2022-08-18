@@ -1,0 +1,84 @@
+{
+	"data": [
+        {
+            "type": "DESPESA",
+            "value": 1100.00,
+            "date": "2022-01-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 1200.00,
+            "date": "2022-02-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 1300.00,
+            "date": "2022-03-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 1400.00,
+            "date": "2022-04-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 1500.00,
+            "date": "2022-05-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 1600.00,
+            "date": "2022-06-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 1700.00,
+            "date": "2022-07-01"
+        },
+        {
+            "type": "DESPESA",
+            "value": 1800.00,
+            "date": "2022-08-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1300.00,
+            "date": "2022-01-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1400.00,
+            "date": "2022-02-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1500.00,
+            "date": "2022-03-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1600.00,
+            "date": "2022-04-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1700.00,
+            "date": "2022-05-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1800.00,
+            "date": "2022-06-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 1900.00,
+            "date": "2022-07-01"
+        },
+        {
+            "type": "RECEITA",
+            "value": 2000.00,
+            "date": "2022-08-01"
+        }
+    ]
+}

@@ -243,6 +243,7 @@
                 [data]="categoryExpenseData"
                 [style]="{ width: '100%' }"
                 [responsive]="true"
+                [options]="categoryExpenseOptions"
             ></p-chart>
         </div>
     </div>
@@ -253,6 +254,7 @@
                 type="doughnut"
                 [data]="typeExpenseData"
                 [style]="{ width: '100%' }"
+                [options]="categoryExpenseOptions"
             >
             </p-chart>
         </div>
@@ -260,15 +262,27 @@
 
 
 
-    <div class="col-12 xl:col-12">
+    <div class="col-12 xl:col-6">
         <div class="card">
-            <h5>Diferença entre entrada e saída</h5>
+            <h5>Lançamentos Mensal</h5>
             <p-chart
                 type="bar"
-                [data]="chartData"
-                [options]="chartOptions"
+                [data]="chartDiffByMonth"
+                [options]="chartDiffByMonthOption"
             ></p-chart>
         </div>
+    </div>
+
+    <div class="col-12 xl:col-6">
+        <div class="card">
+            <h5>Histórico Diferença Mensal</h5>
+            <p-chart
+                type="bar"
+                [data]="chartResultByMonth"
+                [options]="chartResultByMonthOption"
+            ></p-chart>
+        </div>
+    </div>
 
         <!-- <div class="card">
             <div class="flex align-items-center justify-content-between mb-4">
@@ -411,7 +425,6 @@
                 </li>
             </ul>
         </div> -->
-    </div>
     <div class="col-12 xl:col-12">
         <div class="card">
             <h5>Lançamentos Por Mês</h5>
