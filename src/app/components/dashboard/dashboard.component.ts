@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import colorLib from '@kurkle/color';
 import * as moment from 'moment';
 import { Resume } from 'src/app/api/resume';
+import { ResumeActual } from 'src/app/api/resume-actual';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { MouthLauch } from '../../api/mouth-launch';
 import { DashboardService } from '../../service/dashboard-service';
@@ -34,7 +35,9 @@ export class DashboardComponent implements OnInit {
     typeExpenseData: any;
     loading: boolean = false;
     monthDate: Date = new Date();
+    resumeActual: ResumeActual = {};
     resume: Resume = {};
+
     pt: any;
     constructor(
         private service: DashboardService,
@@ -42,10 +45,14 @@ export class DashboardComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.getResume(this.monthDate);
+        this.getResumeActual();
+        this.getResumeByMonth(this.monthDate);
         this.initChart();
         this.getMonthLaunchers();
         this.buildColumns();
+        this.buildLanguagePT();
+    }
+    private buildLanguagePT() {
         this.pt = {
             firstDayOfWeek: 0,
             dayNames: [
@@ -91,8 +98,24 @@ export class DashboardComponent implements OnInit {
             clear: 'Limpar',
         };
     }
-    getResume(monthDate: Date) {
-        this.service.getResume(monthDate).then((data) => {
+
+    search() {
+        this.resume = {};
+        var that = this;
+        this.loading = true;
+        setTimeout(function () {
+            that.getResumeByMonth(that.monthDate);
+            that.loading = false;
+        }, 1000);
+    }
+    getResumeActual() {
+        this.service.getResumeActual().then((data) => {
+            this.resumeActual = data;
+        });
+    }
+
+    getResumeByMonth(date: Date) {
+        this.service.getResume(date).then((data) => {
             this.resume = data;
         });
     }

@@ -6,6 +6,7 @@ import { LaunchByMonth } from '../api/launch-last-year';
 import { MouthLauch } from '../api/mouth-launch';
 import { ResultLastYear } from '../api/result-last-year';
 import { Resume } from '../api/resume';
+import { ResumeActual } from '../api/resume-actual';
 
 @Injectable()
 export class DashboardService {
@@ -61,9 +62,17 @@ export class DashboardService {
 
     getResume(monthDate: Date) {
         return this.http
-            .get<any>('assets/demo/data/resume.json')
+            .get<any>('assets/demo/data/resume-by-month.json')
             .toPromise()
             .then((res) => res.data as Resume)
+            .then((data) => data);
+    }
+
+    getResumeActual() {
+        return this.http
+            .get<any>('assets/demo/data/resume-actual.json')
+            .toPromise()
+            .then((res) => res.data as ResumeActual)
             .then((data) => data);
     }
 }

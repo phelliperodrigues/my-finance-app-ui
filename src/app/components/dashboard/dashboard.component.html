@@ -15,6 +15,7 @@
                         icon="pi pi-search"
                         iconPos="right"
                         styleClass="ml-2"
+                        (click)="search()"
                         [loading]="loading"
                     ></p-button>
                 </div>
@@ -115,7 +116,7 @@
                                 >
                                 <div class="text-900 font-medium text-xl">
                                     {{
-                                        resume.toReceive
+                                        resumeActual.toReceive
                                             | currency: "BRL":"symbol":"1.2-2"
                                     }}
                                 </div>
@@ -141,7 +142,7 @@
                                 >
                                 <div class="text-900 font-medium text-xl">
                                     {{
-                                        resume.toPay
+                                        resumeActual.toPay
                                             | currency: "BRL":"symbol":"1.2-2"
                                     }}
                                 </div>
@@ -169,7 +170,7 @@
                                 >
                                 <div class="text-900 font-medium text-xl">
                                     {{
-                                        resume.received
+                                        resumeActual.received
                                             | currency: "BRL":"symbol":"1.2-2"
                                     }}
                                 </div>
@@ -197,7 +198,7 @@
                                 >
                                 <div class="text-900 font-medium text-xl">
                                     {{
-                                        resume.payment
+                                        resumeActual.payment
                                             | currency: "BRL":"symbol":"1.2-2"
                                     }}
                                 </div>
@@ -225,7 +226,7 @@
                                 >
                                 <div class="text-900 font-medium text-xl">
                                     {{
-                                        resume.receivedTotal
+                                        resumeActual.receivedTotal
                                             | currency: "BRL":"symbol":"1.2-2"
                                     }}
                                 </div>
