@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
     loading: boolean = false;
     monthDate: Date = new Date();
     resume: Resume = {};
-
+    pt: any;
     constructor(
         private service: DashboardService,
         public layoutService: LayoutService
@@ -46,6 +46,50 @@ export class DashboardComponent implements OnInit {
         this.initChart();
         this.getMonthLaunchers();
         this.buildColumns();
+        this.pt = {
+            firstDayOfWeek: 0,
+            dayNames: [
+                'Domingo',
+                'Segunda',
+                'Terça',
+                'Quarta',
+                'Quinta',
+                'Sexta',
+                'Sábado',
+            ],
+            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            dayNamesMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
+            monthNames: [
+                'Janeiro',
+                'Fevereiro',
+                'Março',
+                'Abril',
+                'Maio',
+                'Junho',
+                'Julho',
+                'Agosto',
+                'Setembro',
+                'Outubro',
+                'Novembro',
+                'Dezembro',
+            ],
+            monthNamesShort: [
+                'Jan',
+                'Fev',
+                'Mar',
+                'Abr',
+                'Mai',
+                'Jun',
+                'Jul',
+                'Ago',
+                'Set',
+                'Out',
+                'Nov',
+                'Dez',
+            ],
+            today: 'Hoje',
+            clear: 'Limpar',
+        };
     }
     getResume(monthDate: Date) {
         this.service.getResume(monthDate).then((data) => {

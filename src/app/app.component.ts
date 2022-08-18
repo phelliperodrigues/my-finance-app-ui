@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig } from 'primeng/api';
 @Component({
     selector: 'app-root',
@@ -7,10 +8,22 @@ import { PrimeNGConfig } from 'primeng/api';
 export class AppComponent {
     menuMode = 'static';
 
-    constructor(private primengConfig: PrimeNGConfig) {}
+    constructor(
+        public translateService: TranslateService,
+        private config: PrimeNGConfig
+    ) {
+        translateService.setDefaultLang('pt');
+        translateService.use('pt');
+    }
 
     ngOnInit() {
-        this.primengConfig.ripple = true;
         document.documentElement.style.fontSize = '14px';
+    }
+
+    translate(lang: string) {
+        this.translateService.use(lang);
+        this.translateService
+            .get('primeng')
+            .subscribe((res) => this.config.setTranslation(res));
     }
 }

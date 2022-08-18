@@ -1,5 +1,13 @@
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { NgModule } from '@angular/core';
+import {
+    HashLocationStrategy,
+    LocationStrategy,
+    registerLocaleData,
+} from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import localePT from '@angular/common/locales/pt';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CalendarModule } from 'primeng/calendar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,9 +21,25 @@ import { PhotoService } from './demo/service/photo.service';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { DashboardService } from './service/dashboard-service';
 import { ProductService } from './service/product.service';
+
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, '../assets/i18n', '.json');
+}
+registerLocaleData(localePT);
+
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
-    imports: [AppRoutingModule, AppLayoutModule],
+    imports: [
+        AppRoutingModule,
+        AppLayoutModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: createTranslateLoader,
+                deps: [HttpClient],
+            },
+        }),
+    ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService,
@@ -27,6 +51,7 @@ import { ProductService } from './service/product.service';
         ProductService,
         CalendarModule,
         DashboardService,
+        { provide: LOCALE_ID, useValue: 'pt-br' },
     ],
     bootstrap: [AppComponent],
 })
