@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import colorLib from '@kurkle/color';
 import * as moment from 'moment';
-import { Resume } from 'src/app/api/resume';
-import { ResumeActual } from 'src/app/api/resume-actual';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import { MouthLauch } from '../../api/mouth-launch';
-import { DashboardService } from '../../service/dashboard-service';
+import { Resume } from 'src/app/model/dashboard/resume';
+import { ResumeActual } from 'src/app/model/dashboard/resume-actual';
+import { MouthLauch } from '../../../model/dashboard/mouth-launch';
+import { DashboardService } from '../../../service/dashboard/dashboard-service';
 
 @Component({
     templateUrl: './dashboard.component.html',

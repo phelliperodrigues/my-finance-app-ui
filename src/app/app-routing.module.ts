@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NotfoundComponent } from './components/notfound/notfound.component';
+import { NotfoundComponent } from './components/pages/notfound/notfound.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
 
 @NgModule({
@@ -15,49 +15,49 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                             path: '',
                             loadChildren: () =>
                                 import(
-                                    './components/dashboard/dashboard.module'
+                                    './components/pages/dashboard/dashboard.module'
                                 ).then((m) => m.DashboardModule),
                         },
                         {
                             path: 'revenues',
                             loadChildren: () =>
                                 import(
-                                    './components/launch/revenue/revenue.module'
+                                    './components/pages/launch/revenue/revenue.module'
                                 ).then((m) => m.RevenueModule),
                         },
                         {
                             path: 'expenses',
                             loadChildren: () =>
                                 import(
-                                    './components/launch/expense/expense.module'
+                                    './components/pages/launch/expense/expense.module'
                                 ).then((m) => m.ExpenseModule),
                         },
                         {
                             path: 'register/provider/company',
                             loadChildren: () =>
                                 import(
-                                    './components/provider/company/company.module'
+                                    './components/pages/provider/company/company.module'
                                 ).then((m) => m.CompanyProviderModule),
                         },
                         {
                             path: 'register/provider/debit',
                             loadChildren: () =>
                                 import(
-                                    './components/provider/debit/debit.module'
+                                    './components/pages/provider/debit/debit.module'
                                 ).then((m) => m.DebitModule),
                         },
                         {
                             path: 'register/provider/category',
                             loadChildren: () =>
                                 import(
-                                    './components/provider/category/category.module'
+                                    './components/pages/provider/category/category.module'
                                 ).then((m) => m.CategoryProviderModule),
                         },
                         {
                             path: 'register/payer/category',
                             loadChildren: () =>
                                 import(
-                                    './components/payer/category/category.module'
+                                    './components/pages/payer/category/category.module'
                                 ).then((m) => m.CategoryPayerModule),
                         },
                         {
@@ -100,16 +100,16 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                 {
                     path: 'auth',
                     loadChildren: () =>
-                        import('./components/auth/auth.module').then(
+                        import('./components/pages/auth/auth.module').then(
                             (m) => m.AuthModule
                         ),
                 },
                 {
                     path: '',
                     loadChildren: () =>
-                        import('./components/landing/landing.module').then(
-                            (m) => m.LandingModule
-                        ),
+                        import(
+                            './components/pages/landing/landing.module'
+                        ).then((m) => m.LandingModule),
                 },
                 { path: 'pages/notfound', component: NotfoundComponent },
                 { path: '**', redirectTo: 'pages/notfound' },

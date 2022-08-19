@@ -1,0 +1,47 @@
+{
+	"data": [
+        {
+            "id": "1",
+            "name": "Entrada 1",
+            "description": "Descripción de la entrada 1",
+            "isRecurrent": "false",
+            "recurrentDays": "10",
+            "dueDate": "2022-08-30",
+            "value": "10.00",
+            "status": "EM_DIA",
+            "company": {
+                "id": "1",
+                "name": "Empresa 1"
+            }
+        },
+        {
+            "id": "1",
+            "name": "Entrada 2",
+            "description": "Descripción de la entrada 2",
+            "isRecurrent": "false",
+            "recurrentDays": "10",
+            "dueDate": "2022-08-01",
+            "value": "10.00",
+            "status": "VENCIDO",
+            "company": {
+                "id": "1",
+                "name": "Empresa 2"
+            }
+        },
+        {
+            "id": "1",
+            "name": "Entrada 3",
+            "description": "Descripción de la entrada 3",
+            "isRecurrent": "false",
+            "recurrentDays": "10",
+            "dueDate": "2022-08-05",
+            "paymentDate": "2022-08-05",
+            "value": "10.00",
+            "status": "PAGO",
+            "company": {
+                "id": "1",
+                "name": "Empresa 3"
+            }
+        }
+    ]
+}

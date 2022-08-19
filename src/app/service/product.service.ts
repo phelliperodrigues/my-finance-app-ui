@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MouthLauch } from '../api/mouth-launch';
+import { MouthLauch } from '../model/dashboard/mouth-launch';
 
 @Injectable()
 export class ProductService {

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Product } from 'src/app/demo/api/product';
+import { Revenue } from 'src/app/model/launch/revenue';
+import { RevenueService } from 'src/app/service/launch/revenue.service';
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
@@ -15,9 +17,12 @@ export class RevenueComponent implements OnInit {
 
     deleteProductsDialog: boolean = false;
 
+    product: Product = {};
     products: Product[] = [];
 
-    product: Product = {};
+    revenues: Revenue[] = [];
+
+    revenue: Revenue = {};
 
     selectedProducts: Product[] = [];
 
@@ -33,20 +38,21 @@ export class RevenueComponent implements OnInit {
 
     constructor(
         private productService: ProductService,
+        private revenueService: RevenueService,
         private messageService: MessageService
     ) {}
 
     ngOnInit() {
-        this.productService
-            .getProducts()
-            .then((data) => (this.products = data));
+        this.revenueService
+            .getAll(this.monthDate)
+            .then((data) => (this.revenues = data));
 
         this.cols = [
-            { field: 'product', header: 'Product' },
-            { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' },
-            { field: 'rating', header: 'Reviews' },
-            { field: 'inventoryStatus', header: 'Status' },
+            { field: 'name', header: 'Nome' },
+            { field: 'company.name', header: 'Origem' },
+            { field: 'dueDate', header: 'Data Pagamento' },
+            { field: 'value', header: 'Valor' },
+            { field: 'status', header: 'Status' },
         ];
 
         this.statuses = [
@@ -76,9 +82,37 @@ export class RevenueComponent implements OnInit {
         this.product = { ...product };
     }
 
+    clone(object: any) {
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Sucesso',
+            detail: 'Entrada clonada com sucesso',
+            life: 3000,
+        });
+        return JSON.parse(JSON.stringify(object));
+    }
+
+    pay(revenue: Revenue) {
+        revenue.status = 'PAID';
+        this.revenueService.update(revenue.id!, revenue).then((data) => {
+            this.revenues = this.revenues.map((val) => {
+                if (val.id === data.id) {
+                    return data;
+                }
+                return val;
+            });
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso',
+                detail: 'Entrada recebida com sucesso',
+                life: 3000,
+            });
+        });
+    }
+
     confirmDeleteSelected() {
         this.deleteProductsDialog = false;
-        this.products = this.products.filter(
+        this.revenues = this.revenues.filter(
             (val) => !this.selectedProducts.includes(val)
         );
         this.messageService.add({

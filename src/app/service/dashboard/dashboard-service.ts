@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ExpenseCategory } from '../api/expense-category';
-import { ExpenseType } from '../api/expense-type';
-import { LaunchByMonth } from '../api/launch-last-year';
-import { MouthLauch } from '../api/mouth-launch';
-import { ResultLastYear } from '../api/result-last-year';
-import { Resume } from '../api/resume';
-import { ResumeActual } from '../api/resume-actual';
+import { ExpenseCategory } from '../../model/dashboard/expense-category';
+import { ExpenseType } from '../../model/dashboard/expense-type';
+import { LaunchByMonth } from '../../model/dashboard/launch-last-year';
+import { MouthLauch } from '../../model/dashboard/mouth-launch';
+import { ResultLastYear } from '../../model/dashboard/result-last-year';
+import { Resume } from '../../model/dashboard/resume';
+import { ResumeActual } from '../../model/dashboard/resume-actual';
 
 @Injectable()
 export class DashboardService {

@@ -11,7 +11,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CalendarModule } from 'primeng/calendar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NotfoundComponent } from './components/notfound/notfound.component';
+import { NotfoundComponent } from './components/pages/notfound/notfound.component';
 import { CountryService } from './demo/service/country.service';
 import { CustomerService } from './demo/service/customer.service';
 import { EventService } from './demo/service/event.service';
@@ -19,11 +19,12 @@ import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { AppLayoutModule } from './layout/app.layout.module';
-import { DashboardService } from './service/dashboard-service';
+import { DashboardService } from './service/dashboard/dashboard-service';
+import { RevenueService } from './service/launch/revenue.service';
 import { ProductService } from './service/product.service';
 
 export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, '../assets/i18n', '.json');
+    return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }
 registerLocaleData(localePT);
 
@@ -51,6 +52,7 @@ registerLocaleData(localePT);
         ProductService,
         CalendarModule,
         DashboardService,
+        RevenueService,
         { provide: LOCALE_ID, useValue: 'pt-br' },
     ],
     bootstrap: [AppComponent],
