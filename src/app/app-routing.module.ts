@@ -8,7 +8,7 @@ import { AppLayoutComponent } from './layout/app.layout.component';
         RouterModule.forRoot(
             [
                 {
-                    path: '',
+                    path: 'admin',
                     component: AppLayoutComponent,
                     children: [
                         {
@@ -100,14 +100,14 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                 {
                     path: 'auth',
                     loadChildren: () =>
-                        import('./demo/components/auth/auth.module').then(
+                        import('./components/auth/auth.module').then(
                             (m) => m.AuthModule
                         ),
                 },
                 {
-                    path: 'landing',
+                    path: '',
                     loadChildren: () =>
-                        import('./demo/components/landing/landing.module').then(
+                        import('./components/landing/landing.module').then(
                             (m) => m.LandingModule
                         ),
                 },

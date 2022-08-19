@@ -18,7 +18,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Dashboard',
                         icon: 'pi pi-fw pi-home',
-                        routerLink: ['/'],
+                        routerLink: ['/admin'],
                     },
                 ],
             },
@@ -28,12 +28,12 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Entradas',
                         icon: 'pi pi-fw pi-plus-circle',
-                        routerLink: ['/revenues'],
+                        routerLink: ['/admin/revenues'],
                     },
                     {
                         label: 'Saídas',
                         icon: 'pi pi-fw pi-minus-circle',
-                        routerLink: ['/expenses'],
+                        routerLink: ['/admin/expenses'],
                     },
                 ],
             },
@@ -47,17 +47,21 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Empresas',
                                 icon: 'pi pi-fw pi-sitemap',
-                                routerLink: ['/register/provider/company'],
+                                routerLink: [
+                                    '/admin/register/provider/company',
+                                ],
                             },
                             {
                                 label: 'Dividas',
                                 icon: 'pi pi-fw pi-shopping-cart',
-                                routerLink: ['/register/provider/debit'],
+                                routerLink: ['/admin/register/provider/debit'],
                             },
                             {
                                 label: 'Categorias de Despesas',
                                 icon: 'pi pi-fw pi-tag',
-                                routerLink: ['/register/provider/category'],
+                                routerLink: [
+                                    '/admin/register/provider/category',
+                                ],
                             },
                         ],
                     },
@@ -68,7 +72,7 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Categoria de Receita',
                                 icon: 'pi pi-fw pi-tags',
-                                routerLink: ['/register/payer/category'],
+                                routerLink: ['/admin/register/payer/category'],
                             },
                         ],
                     },
@@ -79,12 +83,12 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Meu Cadastro',
                                 icon: 'pi pi-fw pi-user-plus',
-                                routerLink: ['/users'],
+                                routerLink: ['/admin/users'],
                             },
                             {
                                 label: 'Convidar',
                                 icon: 'pi pi-fw pi-envelope',
-                                routerLink: ['/users/invite'],
+                                routerLink: ['/admin/users/invite'],
                             },
                         ],
                     },
