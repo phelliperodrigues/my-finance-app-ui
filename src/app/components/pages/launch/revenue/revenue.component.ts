@@ -29,8 +29,9 @@ export class RevenueComponent implements OnInit {
     submitted: boolean = false;
 
     cols: any[] = [];
-
+    valSwitch: boolean = false;
     statuses: any[] = [];
+    companies: any[] = [];
 
     rowsPerPageOptions = [5, 10, 20];
 
@@ -50,7 +51,8 @@ export class RevenueComponent implements OnInit {
         this.cols = [
             { field: 'name', header: 'Nome' },
             { field: 'company.name', header: 'Origem' },
-            { field: 'dueDate', header: 'Data Pagamento' },
+            { field: 'dueDate', header: 'Data Vencimento' },
+            { field: 'paymentDate', header: 'Data Pagamento' },
             { field: 'value', header: 'Valor' },
             { field: 'status', header: 'Status' },
         ];
@@ -60,6 +62,13 @@ export class RevenueComponent implements OnInit {
             { label: 'LOWSTOCK', value: 'lowstock' },
             { label: 'OUTOFSTOCK', value: 'outofstock' },
         ];
+
+        this.companies = [
+            { id: '1', name: 'Empresa 1' },
+            { id: '2', name: 'Empresa 2' },
+            { id: '3', name: 'Empresa 3' },
+        ];
+        this.openNew();
     }
 
     openNew() {
@@ -211,5 +220,26 @@ export class RevenueComponent implements OnInit {
             (event.target as HTMLInputElement).value,
             'contains'
         );
+    }
+
+    isRecurrent() {
+        return this.revenue.isRecurrent === true;
+    }
+
+    getDueDate(event: any) {
+        var day = event.value;
+        let date = new Date();
+        let lastDayMonth = this.getLastDay(date.getFullYear(), date.getMonth());
+        if (day > lastDayMonth) {
+            date.setDate(lastDayMonth);
+            this.revenue.dueDate = date;
+        } else {
+            date.setDate(event.value);
+            this.revenue.dueDate = date;
+        }
+    }
+
+    private getLastDay(year: number, month: number) {
+        return new Date(year, month + 1, 0).getDate();
     }
 }

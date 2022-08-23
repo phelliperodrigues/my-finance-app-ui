@@ -1,13 +1,29 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
-
             <p-toast></p-toast>
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="Adicionar" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-                        <button pButton pRipple label="Deletar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+                        <button
+                            pButton
+                            pRipple
+                            label="Adicionar"
+                            icon="pi pi-plus"
+                            class="p-button-success mr-2"
+                            (click)="openNew()"
+                        ></button>
+                        <button
+                            pButton
+                            pRipple
+                            label="Deletar"
+                            icon="pi pi-trash"
+                            class="p-button-danger"
+                            (click)="deleteSelectedProducts()"
+                            [disabled]="
+                                !selectedProducts || !selectedProducts.length
+                            "
+                        ></button>
                     </div>
                 </ng-template>
 
@@ -16,14 +32,48 @@
                 </ng-template> -->
             </p-toolbar>
 
-            <p-table #dt [value]="revenues" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table
+                #dt
+                [value]="revenues"
+                [columns]="cols"
+                responsiveLayout="scroll"
+                [rows]="10"
+                [globalFilterFields]="[
+                    'name',
+                    'company.name',
+                    'dueDate',
+                    'status'
+                ]"
+                [rows]="10"
+                [paginator]="true"
+                [rowsPerPageOptions]="[10, 20, 30]"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Exibindo {first} à {last} de {totalRecords} entradas"
+                [(selection)]="selectedProducts"
+                selectionMode="multiple"
+                [rowHover]="true"
+                dataKey="id"
+            >
                 <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <div
+                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+                    >
                         <h3 class="m-0">Registro de Entradas</h3>
-                        <p-calendar [(ngModel)]="monthDate" view="month" dateFormat="MM - yy" [showIcon]="true" ></p-calendar>
+                        <p-calendar
+                            [(ngModel)]="monthDate"
+                            view="month"
+                            dateFormat="MM - yy"
+                            [showIcon]="true"
+                        ></p-calendar>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Pesquisar..."  class="w-full sm:w-auto"/>
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="onGlobalFilter(dt, $event)"
+                                placeholder="Pesquisar..."
+                                class="w-full sm:w-auto"
+                            />
                         </span>
                     </div>
                 </ng-template>
@@ -32,48 +82,99 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="name">Nome <p-sortIcon field="name"></p-sortIcon></th>
-                        <th pSortableColumn="price">Origem <p-sortIcon field="price"></p-sortIcon></th>
-                        <th pSortableColumn="category">Data Vencimento <p-sortIcon field="category"></p-sortIcon></th>
-                        <th pSortableColumn="category">Data Pagamento <p-sortIcon field="category"></p-sortIcon></th>
-                        <th pSortableColumn="rating">Valor <p-sortIcon field="rating"></p-sortIcon></th>
-                        <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                        <th pSortableColumn="name">
+                            Nome <p-sortIcon field="name"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="company.name">
+                            Origem <p-sortIcon field="company.name"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="dueDate">
+                            Data Vencimento
+                            <p-sortIcon field="dueDate"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="paymentDate">
+                            Data Pagamento
+                            <p-sortIcon field="paymentDate"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="value">
+                            Valor <p-sortIcon field="value"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="status">
+                            Status
+                            <p-sortIcon field="status"></p-sortIcon>
+                        </th>
                         <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-revenue>
                     <tr>
                         <td>
-                            <p-tableCheckbox [value]="revenue"></p-tableCheckbox>
+                            <p-tableCheckbox
+                                [value]="revenue"
+                            ></p-tableCheckbox>
                         </td>
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Nome</span>
-                            {{revenue.name}}
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Nome</span>
+                            {{ revenue.name }}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Origem</span>
-                            {{revenue.company.name}}
+                            {{ revenue.company.name }}
                         </td>
-                        <td style="width:14%; min-width:8rem;">
+                        <td style="width: 14%; min-width: 8rem">
                             <span class="p-column-title">Data Vencimento </span>
-                            {{revenue.dueDate  | date: 'dd/MM/yyyy'}}
+                            {{ revenue.dueDate | date: "dd/MM/yyyy" }}
                         </td>
-                        <td style="width:14%; min-width:8rem;">
+                        <td style="width: 14%; min-width: 8rem">
                             <span class="p-column-title">Data Pagamento </span>
-                            {{revenue.paymentDate| date: 'dd/MM/yyyy'}}
+                            {{ revenue.paymentDate | date: "dd/MM/yyyy" }}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Valor</span>
-                            {{revenue.value | currency:'BRL':true:'1.2-2'}}
+                            {{ revenue.value | currency: "BRL":true:"1.2-2" }}
                         </td>
-                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Status</span>
-                            <span [class]="'status-badge status-' + (revenue.status ? revenue.status.toLowerCase() : '')">{{revenue.status}}</span>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Status</span>
+                            <span
+                                [class]="
+                                    'status-badge status-' +
+                                    (revenue.status
+                                        ? revenue.status.toLowerCase()
+                                        : '')
+                                "
+                                >{{ revenue.status }}</span
+                            >
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-help mr-2" (click)="editProduct(product)"></button>
-                                <button pButton pRipple icon="pi pi-clone" class="p-button-rounded p-button-info mr-2" (click)="clone(product)"></button>
-                                <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success mr-2" (click)="pay(product)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-help mr-2"
+                                    (click)="editProduct(product)"
+                                ></button>
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-clone"
+                                    class="p-button-rounded p-button-info mr-2"
+                                    (click)="clone(product)"
+                                ></button>
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-check"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="pay(product)"
+                                ></button>
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-trash"
+                                    class="p-button-rounded p-button-warning"
+                                    (click)="deleteProduct(product)"
+                                ></button>
                             </div>
                         </td>
                     </tr>
@@ -81,90 +182,222 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true" class="p-fluid">
+        <p-dialog
+            [(visible)]="productDialog"
+            [style]="{ width: '450px' }"
+            header="Entrada"
+            [modal]="true"
+            class="p-fluid"
+        >
             <ng-template pTemplate="content">
-                <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="product.image">
                 <div class="field">
-                    <label for="name">Name</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="product.name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">Name is required.</small>
-                </div>
-                <div class="field">
-                    <label for="description">Description</label>
-                    <textarea id="description" pInputTextarea [(ngModel)]="product.description" required rows="3" cols="20"></textarea>
-                </div>
-
-                <div class="field">
-                    <label for="status">Inventory Status</label>
-                    <p-dropdown id="status" [options]="statuses" optionLabel="label" [(ngModel)]="product.inventoryStatus" placeholder="Select a Status">
+                    <label for="empresa">Empresa</label>
+                    <p-dropdown
+                        id="empresa"
+                        [options]="companies"
+                        optionLabel="name"
+                        [(ngModel)]="revenue.company"
+                        placeholder="Selecione uma empresa"
+                    >
                         <ng-template pTemplate="selectedItem">
-                            <span *ngIf="product && product.inventoryStatus" [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>
+                            <span
+                                *ngIf="revenue && revenue.company"
+                                >{{ revenue.company.name }}</span
+                            >
                         </ng-template>
-                        <ng-template let-status pTemplate="status">
-                            <span [class]="'product-badge status-' + status.value.toLowerCase()">{{status.label}}</span>
+                        <ng-template let-company pTemplate="company">
+                            <span
+                                >{{ company.name }}</span
+                            >
                         </ng-template>
                     </p-dropdown>
                 </div>
 
                 <div class="field">
-                    <label class="mb-3">Category</label>
-                    <div class="formgrid grid">
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton id="category1" name="category" value="Accessories" [(ngModel)]="product.category"></p-radioButton>
-                            <label for="category1">Accessories</label>
-                        </div>
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton id="category2" name="category" value="Clothing" [(ngModel)]="product.category"></p-radioButton>
-                            <label for="category2">Clothing</label>
-                        </div>
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton id="category3" name="category" value="Electronics" [(ngModel)]="product.category"></p-radioButton>
-                            <label for="category3">Electronics</label>
-                        </div>
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton id="category4" name="category" value="Fitness" [(ngModel)]="product.category"></p-radioButton>
-                            <label for="category4">Fitness</label>
-                        </div>
-                    </div>
+                    <label for="name">Nome</label>
+                    <input
+                        type="text"
+                        pInputText
+                        id="name"
+                        [(ngModel)]="revenue.name"
+                        required
+                        autofocus
+                        [ngClass]="{
+                            'ng-invalid ng-dirty': submitted && !revenue.name
+                        }"
+                    />
+                    <small
+                        class="ng-dirty ng-invalid"
+                        *ngIf="submitted && !revenue.name"
+                        >Nome é obrigatório.</small
+                    >
                 </div>
-
+                <div class="field">
+                    <label for="description">Descrição</label>
+                    <textarea
+                        id="description"
+                        pInputTextarea
+                        [(ngModel)]="revenue.description"
+                        required
+                        rows="3"
+                        cols="20"
+                    ></textarea>
+                </div>
                 <div class="formgrid grid">
                     <div class="field col">
-                        <label for="price">Price</label>
-                        <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+                        <label for="isRecurrent">Recebimento Mensal?</label>
+                        <br/>
+                        <p-inputSwitch id="isRecurrent" [(ngModel)]="revenue.isRecurrent"></p-inputSwitch>
+                    </div>
+                   
+                    
+                </div>
+                <div class="formgrid grid">
+                   
+                    <div class="field col"  *ngIf="revenue.isRecurrent">
+                        <label for="dayOfDue">Vence dia</label>
+                        <p-inputNumber [showButtons]="true"  id="dayOfDue" [(ngModel)]="revenue.dayOfDue" [min]="1" [max]="31" (onInput)="getDueDate($event)"></p-inputNumber>
+                    </div>
+
+                    <div class="field col"  *ngIf="revenue.isRecurrent">
+                        <label for="times">Quantidade de Meses</label>
+                        <p-inputNumber [showButtons]="true" id="times" [(ngModel)]="revenue.times" [min]="1" [max]="100"></p-inputNumber>
+                    </div>
+                    
+                </div>
+                
+
+                <div class="formgrid grid">
+                    <div class="field col" >
+                        <label for="dueDate">Data de Vencimento</label>
+                        <p-calendar
+                            id="dueDate"
+                            [(ngModel)]="revenue.dueDate"
+                            [showIcon]="true"
+                            [yearNavigator]="true"
+                            appendTo="body"
+                            [monthNavigator]="true"
+                            dateFormat="dd/mm/yy"
+                            [disabled]="isRecurrent()"
+                        ></p-calendar>
+                    
                     </div>
                     <div class="field col">
-                        <label for="quantity">Quantity</label>
-                        <p-inputNumber id="quantity" [(ngModel)]="product.quantity"></p-inputNumber>
+                        <label for="paymentDate">Data de Recebimento</label>
+                        <p-calendar
+                            id="paymentDate"
+                            [(ngModel)]="revenue.paymentDate"
+                            [showIcon]="true"
+                            [yearNavigator]="true"
+                            appendTo="body"
+                            dateFormat="dd/mm/yy"
+                            [monthNavigator]="true"
+                        ></p-calendar>
                     </div>
+                </div>
+             
+                <div class="formgrid grid">
+                    
+                    <div class="field col">
+                        <label for="value">Valor</label>
+                        <p-inputNumber
+                            id="value"
+                            [(ngModel)]="revenue.value"
+                            mode="currency"
+                            currency="BRL"
+                            locale="pt-BR"
+                        ></p-inputNumber>
+                    </div>
+                    <div class="field col"></div>
                 </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+                <button
+                    pButton
+                    pRipple
+                    label="Cancelar"
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    (click)="hideDialog()"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    label="Salvar"
+                    icon="pi pi-check"
+                    class="p-button-text"
+                    (click)="saveProduct()"
+                ></button>
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteProductDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog
+            [(visible)]="deleteProductDialog"
+            header="Confirm"
+            [modal]="true"
+            [style]="{ width: '450px' }"
+        >
             <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="product">Are you sure you want to delete <b>{{product.name}}</b>?</span>
+                <i
+                    class="pi pi-exclamation-triangle mr-3"
+                    style="font-size: 2rem"
+                ></i>
+                <span *ngIf="product"
+                    >Are you sure you want to delete <b>{{ product.name }}</b
+                    >?</span
+                >
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteProductDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    label="No"
+                    (click)="deleteProductDialog = false"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-check"
+                    class="p-button-text"
+                    label="Yes"
+                    (click)="confirmDelete()"
+                ></button>
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteProductsDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog
+            [(visible)]="deleteProductsDialog"
+            header="Confirm"
+            [modal]="true"
+            [style]="{ width: '450px' }"
+        >
             <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <i
+                    class="pi pi-exclamation-triangle mr-3"
+                    style="font-size: 2rem"
+                ></i>
                 <span>Are you sure you want to delete selected products?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteProductsDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    label="No"
+                    (click)="deleteProductsDialog = false"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-check"
+                    class="p-button-text"
+                    label="Yes"
+                    (click)="confirmDeleteSelected()"
+                ></button>
             </ng-template>
         </p-dialog>
     </div>

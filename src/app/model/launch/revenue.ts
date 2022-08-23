@@ -6,7 +6,8 @@ export interface Revenue {
     description?: string;
     company?: CompanyPayment;
     isRecurrent?: boolean;
-    recurrentDays?: number;
+    dayOfDue?: number;
+    times?: number;
     dueDate?: Date;
     paymentDate?: Date;
     value?: number;

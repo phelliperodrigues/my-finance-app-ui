@@ -21,7 +21,7 @@
             "isRecurrent": "false",
             "recurrentDays": "10",
             "dueDate": "2022-08-01",
-            "value": "10.00",
+            "value": "10.01",
             "status": "VENCIDO",
             "company": {
                 "id": "1",
@@ -36,7 +36,7 @@
             "recurrentDays": "10",
             "dueDate": "2022-08-05",
             "paymentDate": "2022-08-05",
-            "value": "10.00",
+            "value": "10.02",
             "status": "PAGO",
             "company": {
                 "id": "1",
