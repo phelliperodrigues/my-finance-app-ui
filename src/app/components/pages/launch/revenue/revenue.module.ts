@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -39,6 +40,7 @@ import { RevenueComponent } from './revenue.component';
         DialogModule,
         CalendarModule,
         InputSwitchModule,
+        CheckboxModule,
     ],
     declarations: [RevenueComponent],
 })

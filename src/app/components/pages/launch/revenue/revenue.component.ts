@@ -37,6 +37,8 @@ export class RevenueComponent implements OnInit {
 
     monthDate: Date = new Date();
 
+    editing: boolean = false;
+
     constructor(
         private productService: ProductService,
         private revenueService: RevenueService,
@@ -68,7 +70,7 @@ export class RevenueComponent implements OnInit {
             { id: '2', name: 'Empresa 2' },
             { id: '3', name: 'Empresa 3' },
         ];
-        this.openNew();
+        // this.openNew();
     }
 
     openNew() {

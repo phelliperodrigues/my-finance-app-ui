@@ -12,4 +12,5 @@ export interface Revenue {
     paymentDate?: Date;
     value?: number;
     status?: string;
+    replyNextMonths?: boolean;
 }
