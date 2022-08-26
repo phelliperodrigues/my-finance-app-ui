@@ -20,7 +20,9 @@ import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { DashboardService } from './service/dashboard/dashboard-service';
+import { ExpenseService } from './service/launch/expense.service';
 import { RevenueService } from './service/launch/revenue.service';
+import { CompanyProviderService } from './service/payer/company.service';
 import { ProductService } from './service/product.service';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -53,6 +55,8 @@ registerLocaleData(localePT);
         CalendarModule,
         DashboardService,
         RevenueService,
+        CompanyProviderService,
+        ExpenseService,
         { provide: LOCALE_ID, useValue: 'pt-br' },
     ],
     bootstrap: [AppComponent],

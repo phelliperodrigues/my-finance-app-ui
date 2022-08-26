@@ -19,9 +19,9 @@
                             label="Deletar"
                             icon="pi pi-trash"
                             class="p-button-danger"
-                            (click)="deleteSelectedProducts()"
+                            (click)="deleteSelectedRevenues()"
                             [disabled]="
-                                !selectedProducts || !selectedProducts.length
+                                !selectedRevenues || !selectedRevenues.length
                             "
                         ></button>
                     </div>
@@ -49,7 +49,7 @@
                 [rowsPerPageOptions]="[10, 20, 30]"
                 [showCurrentPageReport]="true"
                 currentPageReportTemplate="Exibindo {first} à {last} de {totalRecords} entradas"
-                [(selection)]="selectedProducts"
+                [(selection)]="selectedRevenues"
                 selectionMode="multiple"
                 [rowHover]="true"
                 dataKey="id"
@@ -58,7 +58,7 @@
                     <div
                         class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
                     >
-                        <h3 class="m-0">Registro de Entradas</h3>
+                        <h3 class="m-0">Registro de Receitas</h3>
                         <p-calendar
                             [(ngModel)]="monthDate"
                             view="month"
@@ -139,11 +139,11 @@
                             <span
                                 [class]="
                                     'status-badge status-' +
-                                    (revenue.status
-                                        ? revenue.status.toLowerCase()
+                                    (getStatus(revenue)
+                                        ? getStatus(revenue).toLowerCase()
                                         : '')
                                 "
-                                >{{ revenue.status }}</span
+                                >{{ getStatus(revenue) }}</span
                             >
                         </td>
                         <td>
@@ -153,28 +153,29 @@
                                     pRipple
                                     icon="pi pi-pencil"
                                     class="p-button-rounded p-button-help mr-2"
-                                    (click)="editProduct(product)"
+                                    (click)="editRevenue(revenue)"
                                 ></button>
                                 <button
                                     pButton
                                     pRipple
                                     icon="pi pi-clone"
                                     class="p-button-rounded p-button-info mr-2"
-                                    (click)="clone(product)"
+                                    (click)="doClone()"
                                 ></button>
                                 <button
                                     pButton
                                     pRipple
-                                    icon="pi pi-check"
+                                    icon="pi pi-money-bill"
                                     class="p-button-rounded p-button-success mr-2"
-                                    (click)="pay(product)"
+                                    (click)="payRevenue(revenue)"
+                                    [disabled]="revenue.paymentDate"
                                 ></button>
                                 <button
                                     pButton
                                     pRipple
                                     icon="pi pi-trash"
                                     class="p-button-rounded p-button-warning"
-                                    (click)="deleteProduct(product)"
+                                    (click)="deleteRevenue(revenue)"
                                 ></button>
                             </div>
                         </td>
@@ -184,7 +185,7 @@
         </div>
 
         <p-dialog
-            [(visible)]="productDialog"
+            [(visible)]="revenueDialog"
             [style]="{ width: '450px' }"
             header="Entrada"
             [modal]="true"
@@ -249,7 +250,7 @@
                         cols="20"
                     ></textarea>
                 </div>
-                <div class="formgrid grid">
+                <div class="formgrid grid" *ngIf="!editing">
                     <div class="field col">
                         <label for="isRecurrent">Recebimento Mensal?</label>
                         <br />
@@ -260,7 +261,10 @@
                     </div>
                 </div>
                 <div class="formgrid grid">
-                    <div class="field col" *ngIf="revenue.isRecurrent">
+                    <div
+                        class="field col"
+                        *ngIf="revenue.isRecurrent && !editing"
+                    >
                         <label for="dayOfDue">Vence dia</label>
                         <p-inputNumber
                             [showButtons]="true"
@@ -270,18 +274,28 @@
                             [max]="31"
                             (onInput)="getDueDate($event)"
                             [ngClass]="{
-                                'ng-invalid ng-dirty': submitted && !revenue.dayOfDue && revenue.isRecurrent
+                                'ng-invalid ng-dirty':
+                                    submitted &&
+                                    !revenue.dayOfDue &&
+                                    revenue.isRecurrent
                             }"
                         ></p-inputNumber>
                         <small
-                        class="ng-dirty ng-invalid"
-                        *ngIf="submitted && !revenue.dayOfDue && revenue.isRecurrent"
-                        >Data de Vencimento é obrigatório.</small
-                    >
-                    
+                            class="ng-dirty ng-invalid"
+                            *ngIf="
+                                submitted &&
+                                !revenue.dayOfDue &&
+                                revenue.isRecurrent &&
+                                !editing
+                            "
+                            >Data de Vencimento é obrigatório.</small
+                        >
                     </div>
 
-                    <div class="field col" *ngIf="revenue.isRecurrent">
+                    <div
+                        class="field col"
+                        *ngIf="revenue.isRecurrent && !editing"
+                    >
                         <label for="times">Quantidade de Meses</label>
                         <p-inputNumber
                             [showButtons]="true"
@@ -290,14 +304,21 @@
                             [min]="1"
                             [max]="100"
                             [ngClass]="{
-                                'ng-invalid ng-dirty': submitted && !revenue.times && revenue.isRecurrent
+                                'ng-invalid ng-dirty':
+                                    submitted &&
+                                    !revenue.times &&
+                                    revenue.isRecurrent
                             }"
                         ></p-inputNumber>
                         <small
-                        class="ng-dirty ng-invalid"
-                        *ngIf="submitted && !revenue.times && revenue.isRecurrent"
-                        >Data de Vencimento é obrigatório.</small
-                    >
+                            class="ng-dirty ng-invalid"
+                            *ngIf="
+                                submitted &&
+                                !revenue.times &&
+                                revenue.isRecurrent
+                            "
+                            >Data de Vencimento é obrigatório.</small
+                        >
                     </div>
                 </div>
 
@@ -314,14 +335,15 @@
                             dateFormat="dd/mm/yy"
                             [disabled]="isRecurrent()"
                             [ngClass]="{
-                                'ng-invalid ng-dirty': submitted && !revenue.dueDate
+                                'ng-invalid ng-dirty':
+                                    submitted && !revenue.dueDate
                             }"
                         ></p-calendar>
                         <small
-                        class="ng-dirty ng-invalid"
-                        *ngIf="submitted && !revenue.dueDate"
-                        >Data de Vencimento é obrigatório.</small
-                    >
+                            class="ng-dirty ng-invalid"
+                            *ngIf="submitted && !revenue.dueDate"
+                            >Data de Vencimento é obrigatório.</small
+                        >
                     </div>
                     <div class="field col">
                         <label for="paymentDate">Data de Recebimento</label>
@@ -347,14 +369,15 @@
                             currency="BRL"
                             locale="pt-BR"
                             [ngClass]="{
-                                'ng-invalid ng-dirty': submitted && !revenue.value
+                                'ng-invalid ng-dirty':
+                                    submitted && !revenue.value
                             }"
                         ></p-inputNumber>
                         <small
-                        class="ng-dirty ng-invalid"
-                        *ngIf="submitted && !revenue.value"
-                        >Valor é obrigatório.</small
-                    >
+                            class="ng-dirty ng-invalid"
+                            *ngIf="submitted && !revenue.value"
+                            >Valor é obrigatório.</small
+                        >
                     </div>
                     <div class="field col">
                         <!-- <label for="value">Valor Liquido</label>
@@ -377,9 +400,15 @@
                                 inputId="binary"
                             ></p-checkbox>
                             <label for="binary">
-                                Replicar alteração nos meses seguintes
+                                Aplicar alteração nos meses seguintes
                             </label>
                         </div>
+                        <small
+                            *ngIf="revenue.replyNextMonths"
+                            class="text-orange-600"
+                            >Somente os campos "Empresa", "Nome" e "Valor" serão
+                            atualizados nos meses seguintes
+                        </small>
                     </div>
                 </div>
             </ng-template>
@@ -399,13 +428,13 @@
                     label="Salvar"
                     icon="pi pi-check"
                     class="p-button-text"
-                    (click)="saveProduct()"
+                    (click)="saveRevenue()"
                 ></button>
             </ng-template>
         </p-dialog>
 
         <p-dialog
-            [(visible)]="deleteProductDialog"
+            [(visible)]="deleteRevenueDialog"
             header="Confirm"
             [modal]="true"
             [style]="{ width: '450px' }"
@@ -415,8 +444,8 @@
                     class="pi pi-exclamation-triangle mr-3"
                     style="font-size: 2rem"
                 ></i>
-                <span *ngIf="product"
-                    >Are you sure you want to delete <b>{{ product.name }}</b
+                <span *ngIf="revenue"
+                    >Tem certeza de que deseja excluir <b>{{ revenue.name }}</b
                     >?</span
                 >
             </div>
@@ -426,22 +455,81 @@
                     pRipple
                     icon="pi pi-times"
                     class="p-button-text"
-                    label="No"
-                    (click)="deleteProductDialog = false"
+                    label="Não"
+                    (click)="deleteRevenueDialog = false"
                 ></button>
                 <button
                     pButton
                     pRipple
                     icon="pi pi-check"
                     class="p-button-text"
-                    label="Yes"
+                    label="Sim"
                     (click)="confirmDelete()"
                 ></button>
             </ng-template>
         </p-dialog>
 
         <p-dialog
-            [(visible)]="deleteProductsDialog"
+            [(visible)]="payDialog"
+            header="Confirm"
+            [modal]="true"
+            [style]="{ width: '450px' }"
+        >
+            <div class="flex align-items-center justify-content-center">
+                <i
+                    class="pi pi-money-bill mr-3"
+                    
+                    style="font-size: 3rem"
+                    [ngStyle]="{color:'var(--green-400)'}"
+                ></i>
+                <span *ngIf="revenue"
+                    >Deseja baixar receita <b>{{ revenue.name }}</b
+                    >?</span
+                >
+            </div>
+            <div class="flex flex-column align-items-center justify-content-center mt-5">
+                <label for="dueDate">Selecione uma data de recebimento</label>
+                <p-calendar
+                    id="dueDate"
+                    [(ngModel)]="payDate"
+                    [showIcon]="true"
+                    [yearNavigator]="true"
+                    appendTo="body"
+                    [monthNavigator]="true"
+                    dateFormat="dd/mm/yy"
+                    [showButtonBar]="true"
+                    [ngClass]="{
+                        'ng-invalid ng-dirty': !payDate
+                    }"
+                ></p-calendar>
+                <small class="ng-dirty ng-invalid" *ngIf="!payDate"
+                    >Data de Recebimento é obrigatório.</small
+                >
+            </div>
+
+            <ng-template pTemplate="footer">
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    label="Não"
+                    (click)="payDialog = false"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-check"
+                    class="p-button-text"
+                    label="Sim"
+                    (click)="pay(revenue)"
+                    [disabled]="!payDate"
+                ></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog
+            [(visible)]="deleteRevenuesDialog"
             header="Confirm"
             [modal]="true"
             [style]="{ width: '450px' }"
@@ -451,7 +539,10 @@
                     class="pi pi-exclamation-triangle mr-3"
                     style="font-size: 2rem"
                 ></i>
-                <span>Are you sure you want to delete selected products?</span>
+                <span
+                    >Tem certeza de que deseja excluir as receitas
+                    selecionadas?</span
+                >
             </div>
             <ng-template pTemplate="footer">
                 <button
@@ -459,18 +550,77 @@
                     pRipple
                     icon="pi pi-times"
                     class="p-button-text"
-                    label="No"
-                    (click)="deleteProductsDialog = false"
+                    label="Não"
+                    (click)="deleteRevenuesDialog = false"
                 ></button>
                 <button
                     pButton
                     pRipple
                     icon="pi pi-check"
                     class="p-button-text"
-                    label="Yes"
+                    label="Sim"
                     (click)="confirmDeleteSelected()"
                 ></button>
             </ng-template>
         </p-dialog>
+
+        <p-dialog
+        [(visible)]="cloneDialog"
+        header="Confirm"
+        [modal]="true"
+        [style]="{ width: '450px' }"
+    >
+        <div class="flex align-items-center justify-content-center">
+            <i
+                class="pi pi-clone mr-3"
+                
+                style="font-size: 3rem"
+                [ngStyle]="{color:'var(--blue-500 )'}"
+            ></i>
+            <span *ngIf="revenue"
+                >Deseja clonar receita <b>{{ revenue.name }}</b
+                >?</span
+            >
+        </div>
+        <div class="flex flex-column align-items-center justify-content-center mt-5">
+            <label for="dueDate">Selecione nova data de vencimento</label>
+            <p-calendar
+                id="dueDate"
+                [(ngModel)]="dueDate"
+                [showIcon]="true"
+                [yearNavigator]="true"
+                appendTo="body"
+                [monthNavigator]="true"
+                dateFormat="dd/mm/yy"
+                [showButtonBar]="true"
+                [ngClass]="{
+                    'ng-invalid ng-dirty': !dueDate
+                }"
+            ></p-calendar>
+            <small class="ng-dirty ng-invalid" *ngIf="!dueDate"
+                >Data de Vencimento é obrigatório.</small
+            >
+        </div>
+
+        <ng-template pTemplate="footer">
+            <button
+                pButton
+                pRipple
+                icon="pi pi-times"
+                class="p-button-text"
+                label="Não"
+                (click)="payDialog = false"
+            ></button>
+            <button
+                pButton
+                pRipple
+                icon="pi pi-check"
+                class="p-button-text"
+                label="Sim"
+                (click)="clone(revenue)"
+                [disabled]="!dueDate"
+            ></button>
+        </ng-template>
+    </p-dialog>
     </div>
 </div>

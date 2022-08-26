@@ -11,6 +11,5 @@ export interface Revenue {
     dueDate?: Date;
     paymentDate?: Date;
     value?: number;
-    status?: string;
     replyNextMonths?: boolean;
 }

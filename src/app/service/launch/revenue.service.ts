@@ -1,44 +1,55 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Revenue } from 'src/app/model/launch/revenue';
-
 @Injectable()
 export class RevenueService {
     constructor(private http: HttpClient) {}
 
-    getAll(monthDate: Date): Promise<any> {
+    getAll(monthDate: Date): Promise<any[]> {
         return this.http
             .get<any>('assets/demo/data/revenues.json')
             .toPromise()
-            .then((res) => res.data as Revenue[])
+            .then((res) => res.data as any[])
             .then((data) => data);
     }
 
-    fetch(id: string): Promise<any> {
+    fetch(id: string): Promise<Revenue> {
         return Promise.resolve({});
     }
 
-    create(launch: any): Promise<any> {
-        return Promise.resolve(launch);
+    create(revenue: Revenue): Promise<Revenue> {
+        revenue.id = this.createId();
+
+        return Promise.resolve(revenue);
     }
 
-    update(id: string, launch: any): Promise<any> {
-        return Promise.resolve(launch);
+    update(id?: string, revenue?: Revenue): Promise<any> {
+        return Promise.resolve(revenue);
     }
 
-    delete(id: string): Promise<any> {
+    delete(id: string): Promise<Revenue> {
         return Promise.resolve({});
     }
 
-    deleteAll(ids: string[]): Promise<any> {
+    deleteAll(revenues: Revenue[]): Promise<Revenue> {
         return Promise.resolve({});
     }
 
-    clone(id: string, dueDate: Date): Promise<any> {
+    clone(id: string, dueDate: Date): Promise<Revenue> {
         return Promise.resolve({});
     }
 
-    receive(id: string, dueDate: Date): Promise<any> {
+    receive(id: string, dueDate: Date): Promise<Revenue> {
         return Promise.resolve({});
+    }
+
+    private createId(): string {
+        let id = '';
+        const chars =
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (let i = 0; i < 5; i++) {
+            id += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return id;
     }
 }

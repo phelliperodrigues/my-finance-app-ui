@@ -5,11 +5,16 @@ export interface Expense {
     id?: string;
     description?: string;
     status?: string;
-    provider?: CompanyProvider;
+    company?: CompanyProvider;
     dueDate?: Date;
+    paymentDate?: Date;
     debit?: Debit;
     currentInstallment?: number;
     totalInstallments?: number;
     value?: number;
     barCode?: string;
+    isRecurrent?: boolean;
+    times?: number;
+    dayOfDue?: number;
+    replyNextMonths?: boolean;
 }
