@@ -4,9 +4,9 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { StatusLaunch } from 'src/app/model/enum/status-launch';
 import { Revenue } from 'src/app/model/launch/revenue';
-import { CompanyProvider } from 'src/app/model/provider/company';
+import { CompanyPayment } from 'src/app/model/payer/company';
 import { RevenueService } from 'src/app/service/launch/revenue.service';
-import { CompanyProviderService } from 'src/app/service/payer/company.service';
+import { CompanyPaymentService } from 'src/app/service/payer/company.payer.service';
 
 @Component({
     templateUrl: './revenue.component.html',
@@ -29,7 +29,7 @@ export class RevenueComponent implements OnInit {
     cols: any[] = [];
     valSwitch: boolean = false;
     statuses: any[] = [];
-    companies: CompanyProvider[] = [];
+    companies: CompanyPayment[] = [];
 
     rowsPerPageOptions = [5, 10, 20];
 
@@ -42,7 +42,7 @@ export class RevenueComponent implements OnInit {
     constructor(
         private revenueService: RevenueService,
         private messageService: MessageService,
-        private companyProviderService: CompanyProviderService
+        private companyService: CompanyPaymentService
     ) {}
 
     private getNextMonth(): Date {
@@ -50,9 +50,7 @@ export class RevenueComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.companyProviderService
-            .getAll()
-            .then((data) => (this.companies = data));
+        this.companyService.getAll().then((data) => (this.companies = data));
 
         this.revenueService
             .getAll(this.monthDate)

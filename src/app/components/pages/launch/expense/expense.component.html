@@ -187,22 +187,24 @@
         <p-dialog
             [(visible)]="expenseDialog"
             [style]="{ width: '450px' }"
-            header="Entrada"
+            header="Despesa"
             [modal]="true"
             class="p-fluid"
         >
             <ng-template pTemplate="content">
                 <div class="field">
-                    <label for="empresa">Empresa</label>
+                    <label for="empresa">Fornecedor</label>
+                    
                     <p-dropdown
                         id="empresa"
                         [options]="companies"
                         optionLabel="name"
                         [(ngModel)]="expense.company"
-                        placeholder="Selecione uma empresa"
+                        placeholder="Selecione um fornecedor"
                         [ngClass]="{
                             'ng-invalid ng-dirty': submitted && !expense.company
                         }"
+                        [autofocus]="true"
                     >
                         <ng-template pTemplate="selectedItem">
                             <span *ngIf="expense && expense.company">{{
@@ -221,7 +223,45 @@
                 </div>
 
                 <div class="field">
-                    aqui vai o debit
+                    <label for="debit">Conta</label>
+                    <p-dropdown
+                        id="debit"
+                        [options]="debits"
+                        optionLabel="name"
+                        [(ngModel)]="expense.debit"
+                        placeholder="Selecione uma conta"
+                        [ngClass]="{
+                            'ng-invalid ng-dirty': submitted && !expense.debit
+                        }"
+                    >
+                        <ng-template pTemplate="selectedItem">
+                            <span *ngIf="expense && expense.debit">{{
+                                expense.debit.name
+                            }}</span>
+                        </ng-template>
+                        <ng-template let-debit pTemplate="debit">
+                            <span>{{ debit.name }}</span>
+                        </ng-template>
+                    </p-dropdown>
+                    <small
+                        class="ng-dirty ng-invalid"
+                        *ngIf="submitted && !expense.company"
+                        >Empresa é obrigatório.</small
+                    >
+                </div>
+                <div class="field">
+                    <label for="bar-code">Código de barras</label>
+                    <div class="p-inputgroup">
+                        <input
+                        type="text"
+                        pInputText
+                        id="bar-code"
+                        [(ngModel)]="expense.barCode"
+                        required
+                    />
+                    <button type="button" pButton pRipple icon="pi pi-copy" styleClass="p-button-warn"></button>      
+                    </div>
+                    
                 </div>
                 <div class="field">
                     <label for="description">Descrição</label>

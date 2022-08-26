@@ -22,6 +22,7 @@ import { AppLayoutModule } from './layout/app.layout.module';
 import { DashboardService } from './service/dashboard/dashboard-service';
 import { ExpenseService } from './service/launch/expense.service';
 import { RevenueService } from './service/launch/revenue.service';
+import { CompanyPaymentService } from './service/payer/company.payer.service';
 import { CompanyProviderService } from './service/payer/company.service';
 import { ProductService } from './service/product.service';
 
@@ -57,6 +58,7 @@ registerLocaleData(localePT);
         RevenueService,
         CompanyProviderService,
         ExpenseService,
+        CompanyPaymentService,
         { provide: LOCALE_ID, useValue: 'pt-br' },
     ],
     bootstrap: [AppComponent],

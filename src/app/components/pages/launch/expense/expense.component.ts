@@ -30,7 +30,7 @@ export class ExpenseComponent implements OnInit {
     valSwitch: boolean = false;
     statuses: any[] = [];
     companies: CompanyProvider[] = [];
-
+    debits: any[] = [];
     rowsPerPageOptions = [5, 10, 20];
 
     monthDate: Date = new Date();
@@ -42,7 +42,7 @@ export class ExpenseComponent implements OnInit {
     constructor(
         private expenseService: ExpenseService,
         private messageService: MessageService,
-        private companyProviderService: CompanyProviderService
+        private companyService: CompanyProviderService
     ) {}
 
     private getNextMonth(): Date {
@@ -50,9 +50,7 @@ export class ExpenseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.companyProviderService
-            .getAll()
-            .then((data) => (this.companies = data));
+        this.companyService.getAll().then((data) => (this.companies = data));
 
         this.expenseService
             .getAll(this.monthDate)

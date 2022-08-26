@@ -4,7 +4,6 @@ import { Debit } from '../provider/debit';
 export interface Expense {
     id?: string;
     description?: string;
-    status?: string;
     company?: CompanyProvider;
     dueDate?: Date;
     paymentDate?: Date;
