@@ -1,173 +1,225 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/service/product.service';
-
+import { CompanyProvider } from 'src/app/model/provider/company';
+import { Debit } from 'src/app/model/provider/debit';
+import { TypeDebit } from 'src/app/model/provider/type-debit';
+import { User } from 'src/app/model/user/user';
+import { CompanyProviderService } from 'src/app/service/provider/company.service';
+import { DebitService } from 'src/app/service/provider/debit.service';
 @Component({
     templateUrl: './debit.component.html',
     providers: [MessageService],
 })
 export class DebitComponent implements OnInit {
-    productDialog: boolean = false;
+    registerDialog: boolean = false;
+    deleteRegisterDialog: boolean = false;
+    deleteDialog: boolean = false;
 
-    deleteProductDialog: boolean = false;
+    registers: Debit[] = [];
+    register: Debit = {};
 
-    deleteProductsDialog: boolean = false;
-
-    products: Product[] = [];
-
-    product: Product = {};
-
-    selectedProducts: Product[] = [];
+    selected: Debit[] = [];
 
     submitted: boolean = false;
 
     cols: any[] = [];
 
-    statuses: any[] = [];
-
     rowsPerPageOptions = [5, 10, 20];
 
+    companies: CompanyProvider[] = [];
+
+    types: TypeDebit[] = [];
+
+    owners: User[] = [];
+
     constructor(
-        private productService: ProductService,
-        private messageService: MessageService
+        private service: DebitService,
+        private messageService: MessageService,
+        private companyService: CompanyProviderService
     ) {}
 
     ngOnInit() {
-        this.productService
-            .getProducts()
-            .then((data) => (this.products = data));
+        this.companyService.getAll().then((data) => (this.companies = data));
+
+        this.service.getAll().then((data) => (this.registers = data));
 
         this.cols = [
-            { field: 'product', header: 'Product' },
-            { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' },
-            { field: 'rating', header: 'Reviews' },
-            { field: 'inventoryStatus', header: 'Status' },
+            { field: 'name', header: 'Nome' },
+            { field: 'company.name', header: 'Fornecedor' },
+            { field: 'description', header: 'Descrição' },
+            { field: 'category.name', header: 'Categoria' },
+            { field: 'type', header: 'Tipo' },
+            { field: 'owner', header: 'Pessoa' },
         ];
+    }
 
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' },
-        ];
+    reset() {
+        this.registers = [];
+        this.service.getAll().then((data) => (this.registers = data));
     }
 
     openNew() {
-        this.product = {};
+        this.register = {};
         this.submitted = false;
-        this.productDialog = true;
+        this.registerDialog = true;
     }
 
-    deleteSelectedProducts() {
-        this.deleteProductsDialog = true;
+    deleteSelected() {
+        this.deleteDialog = true;
     }
 
-    editProduct(product: Product) {
-        this.product = { ...product };
-        this.productDialog = true;
+    edit(register: Debit) {
+        this.register = { ...register };
+
+        this.registerDialog = true;
     }
 
-    deleteProduct(product: Product) {
-        this.deleteProductDialog = true;
-        this.product = { ...product };
+    delete(register: Debit) {
+        this.deleteRegisterDialog = true;
+        this.register = { ...register };
+    }
+
+    private update(register: Debit) {
+        this.service
+            .update(register.id, register)
+            .then((data) => {
+                this.registers = this.registers.map((val) => {
+                    if (val.id === data.id) {
+                        return data;
+                    }
+                    return val;
+                });
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Registro atualizado',
+                    life: 3000,
+                });
+            })
+            .catch(() => {
+                console.error('');
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Erro ao alterar a Registro',
+                    life: 3000,
+                });
+            });
     }
 
     confirmDeleteSelected() {
-        this.deleteProductsDialog = false;
-        this.products = this.products.filter(
-            (val) => !this.selectedProducts.includes(val)
+        alert('aaa');
+        this.deleteDialog = false;
+        this.service
+            .deleteAll(this.selected)
+            .then(() => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Registros deletados',
+                    life: 3000,
+                });
+            })
+            .catch(() => {
+                console.error('');
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Erro ao deletar as Registros selecionados',
+                    life: 3000,
+                });
+            });
+        this.registers = this.registers.filter(
+            (val) => !this.selected.includes(val)
         );
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Products Deleted',
-            life: 3000,
-        });
-        this.selectedProducts = [];
+        this.selected = [];
     }
 
     confirmDelete() {
-        this.deleteProductDialog = false;
-        this.products = this.products.filter(
-            (val) => val.id !== this.product.id
+        this.deleteRegisterDialog = false;
+        this.service
+            .delete(this.register.id!)
+            .then(() => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Registro deletado',
+                    life: 3000,
+                });
+            })
+            .catch(() => {
+                console.error('');
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Erro ao deletar a Registro',
+                    life: 3000,
+                });
+            });
+        this.registers = this.registers.filter(
+            (val) => val.id !== this.register.id
         );
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Product Deleted',
-            life: 3000,
-        });
-        this.product = {};
+
+        this.register = {};
     }
 
     hideDialog() {
-        this.productDialog = false;
+        this.registerDialog = false;
         this.submitted = false;
     }
 
-    saveProduct() {
+    save() {
         this.submitted = true;
 
-        if (this.product.name?.trim()) {
-            if (this.product.id) {
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus
-                    .value
-                    ? this.product.inventoryStatus.value
-                    : this.product.inventoryStatus;
-                this.products[this.findIndexById(this.product.id)] =
-                    this.product;
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Updated',
-                    life: 3000,
-                });
+        if (this.register.name?.trim()) {
+            if (this.register.id) {
+                this.update(this.register);
             } else {
-                this.product.id = this.createId();
-                this.product.code = this.createId();
-                this.product.image = 'product-placeholder.svg';
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus
-                    ? this.product.inventoryStatus.value
-                    : 'INSTOCK';
-                this.products.push(this.product);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Created',
-                    life: 3000,
-                });
+                this.service
+                    .create(this.register)
+                    .then((data) => {
+                        this.registers = this.registers.map((val) => {
+                            if (val.id === data.id) {
+                                return data;
+                            }
+                            return val;
+                        });
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Sucesso',
+                            detail: 'Registro criada',
+                            life: 3000,
+                        });
+                    })
+                    .catch(() => {
+                        console.error('');
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Erro',
+                            detail: 'Erro ao criar a Registro',
+                            life: 3000,
+                        });
+                    });
+                this.registers.push(this.register);
             }
 
-            this.products = [...this.products];
-            this.productDialog = false;
-            this.product = {};
+            this.registers = [...this.registers];
+            this.registerDialog = false;
+            this.register = {};
         }
     }
 
     findIndexById(id: string): number {
         let index = -1;
-        for (let i = 0; i < this.products.length; i++) {
-            if (this.products[i].id === id) {
+        for (let i = 0; i < this.registers.length; i++) {
+            if (this.registers[i].id === id) {
                 index = i;
                 break;
             }
         }
 
         return index;
-    }
-
-    createId(): string {
-        let id = '';
-        const chars =
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
     }
 
     onGlobalFilter(table: Table, event: Event) {

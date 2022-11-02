@@ -25,6 +25,7 @@ import { RevenueService } from './service/launch/revenue.service';
 import { CompanyPaymentService } from './service/payer/company.payer.service';
 import { ProductService } from './service/product.service';
 import { CompanyProviderService } from './service/provider/company.service';
+import { DebitService } from './service/provider/debit.service';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -59,6 +60,7 @@ registerLocaleData(localePT);
         CompanyProviderService,
         ExpenseService,
         CompanyPaymentService,
+        DebitService,
         { provide: LOCALE_ID, useValue: 'pt-br' },
     ],
     bootstrap: [AppComponent],

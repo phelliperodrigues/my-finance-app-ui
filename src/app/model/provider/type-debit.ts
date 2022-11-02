@@ -1,5 +1,5 @@
 //create enum
 export enum TypeDebit {
-    'FIXED',
-    'VARIABLE',
+    fixed = 'FIXED',
+    variable = 'VARIABLE',
 }

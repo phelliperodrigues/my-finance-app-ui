@@ -1,4 +1,4 @@
-import { User } from '../user/user';
+import { CategoryProvider } from './category';
 import { CompanyProvider } from './company';
 import { TypeDebit } from './type-debit';
 
@@ -8,5 +8,6 @@ export interface Debit {
     description?: string;
     type?: TypeDebit;
     company?: CompanyProvider;
-    user?: User;
+    owner?: string;
+    category?: CategoryProvider;
 }

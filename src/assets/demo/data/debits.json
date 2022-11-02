@@ -1,5 +1,29 @@
 [
-    { "id": "1", "name": "Debito 1" },
-    { "id": "2", "name": "Debito 2" },
-    { "id": "3", "name": "Debito 3" }
+    {
+        "id": "1",
+        "name": "Debito 1",
+        "description": "Descrição 1",
+        "type": "FIXED",
+        "company": { "id": "1", "name": "Empresa 1" },
+        "category": { "id": "1", "name": "Categoria 1" },
+        "owner": "Pessoa 1"
+    },
+    {
+        "id": "2",
+        "name": "Debito 2",
+        "description": "Descrição 2",
+        "type": "VARIABLE",
+        "company": { "id": "3", "name": "Empresa 3" },
+        "category": { "id": "3", "name": "Categoria 3" },
+        "owner": "Pessoa 2"
+    },
+    {
+        "id": "3",
+        "name": "Debito 3",
+        "description": "Descrição 3",
+        "type": "FIXED",
+        "company": { "id": "2", "name": "Empresa 2" },
+        "category": { "id": "2", "name": "Categoria 2" },
+        "owner": "Pessoa 3"
+    }
 ]

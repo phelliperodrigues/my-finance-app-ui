@@ -38,6 +38,7 @@ export class CompanyProviderComponent implements OnInit {
     }
 
     reset() {
+        this.companies = [];
         this.companyService.getAll().then((data) => (this.companies = data));
     }
 
