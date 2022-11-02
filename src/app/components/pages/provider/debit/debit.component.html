@@ -119,7 +119,7 @@
                         </td>
                         <td style="width: 20%; min-width: 10rem">
                             <span class="p-column-title">Tipo</span>
-                            {{ register.type == "FIXED" ? "FIXO" : "VARIÁVEL" }}
+                            {{ register.type }}
                         </td>
                         <td style="width: 20%; min-width: 10rem">
                             <span class="p-column-title">Pessoa</span>
@@ -216,13 +216,14 @@
                         >
                     </div>
                 <div class="field">
-                    <label for="empresa">Tipo de Custo</label>
+                    <label for="type">Tipo de Custo</label>
                     <p-dropdown
-                        id="empresa"
+                        id="type"
                         [options]="types"
                         optionLabel="name"
+                        optionValue="name"
                         [(ngModel)]="register.type"
-                        placeholder="Selecione uma empresa"
+                        placeholder="Selecione o tipo de custo"
                         [ngClass]="{
                             'ng-invalid ng-dirty':
                                 submitted && !register.type
@@ -244,41 +245,41 @@
                     >
                 </div>
                 <div class="field">
-                    <label for="empresa">Categoria</label>
+                    <label for="categoria">Categoria</label>
                     <p-dropdown
-                        id="empresa"
-                        [options]="types"
+                        id="categoria"
+                        [options]="categories"
                         optionLabel="name"
-                        [(ngModel)]="register.type"
-                        placeholder="Selecione uma empresa"
+                        [(ngModel)]="register.category"
+                        placeholder="Selecione uma categoria"
                         [ngClass]="{
                             'ng-invalid ng-dirty':
-                                submitted && !register.type
+                                submitted && !register.category
                         }"
                     >
                         <ng-template pTemplate="selectedItem">
-                            <span *ngIf="register && register.type">{{
-                                register.type
+                            <span *ngIf="register && register.category">{{
+                                register.category.name
                             }}</span>
                         </ng-template>
-                        <ng-template let-type pTemplate="type">
-                            <span>{{ type.name }}</span>
+                        <ng-template let-category pTemplate="category">
+                            <span>{{ category.name }}</span>
                         </ng-template>
                     </p-dropdown>
                     <small
                         class="ng-dirty ng-invalid"
-                        *ngIf="submitted && !register.type"
-                        >Empresa é obrigatório.</small
+                        *ngIf="submitted && !register.category"
+                        >Categoria é obrigatório.</small
                     >
                 </div>
                 <div class="field">
-                    <label for="empresa">Pessoa</label>
+                    <label for="pessoa">Pessoa</label>
                     <p-dropdown
-                        id="empresa"
+                        id="pessoa"
                         [options]="owners"
                         optionLabel="name"
                         [(ngModel)]="register.owner"
-                        placeholder="Selecione uma empresa"
+                        placeholder="Selecione uma pessoa"
                         [ngClass]="{
                             'ng-invalid ng-dirty':
                                 submitted && !register.owner

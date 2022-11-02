@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { CategoryProvider } from 'src/app/model/provider/category';
 import { CompanyProvider } from 'src/app/model/provider/company';
 import { Debit } from 'src/app/model/provider/debit';
-import { TypeDebit } from 'src/app/model/provider/type-debit';
 import { User } from 'src/app/model/user/user';
+import { CategoryProviderService } from 'src/app/service/provider/category.service';
 import { CompanyProviderService } from 'src/app/service/provider/company.service';
 import { DebitService } from 'src/app/service/provider/debit.service';
+export interface TypeDebit {
+    name: string;
+}
+
 @Component({
     templateUrl: './debit.component.html',
     providers: [MessageService],
@@ -28,19 +33,24 @@ export class DebitComponent implements OnInit {
     rowsPerPageOptions = [5, 10, 20];
 
     companies: CompanyProvider[] = [];
+    categories: CategoryProvider[] = [];
+
+    users: User[] = [];
 
     types: TypeDebit[] = [];
-
-    owners: User[] = [];
-
+    owners = [];
     constructor(
         private service: DebitService,
         private messageService: MessageService,
-        private companyService: CompanyProviderService
-    ) {}
+        private companyService: CompanyProviderService,
+        private categoryService: CategoryProviderService
+    ) {
+        this.types = [{ name: 'FIXO' }, { name: 'VARIÁVEL' }];
+    }
 
     ngOnInit() {
         this.companyService.getAll().then((data) => (this.companies = data));
+        this.categoryService.getAll().then((data) => (this.categories = data));
 
         this.service.getAll().then((data) => (this.registers = data));
 
