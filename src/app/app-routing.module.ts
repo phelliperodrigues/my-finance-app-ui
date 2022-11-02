@@ -54,46 +54,11 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                                 ).then((m) => m.CategoryProviderModule),
                         },
                         {
-                            path: 'register/payer/category',
+                            path: 'register/payer/company',
                             loadChildren: () =>
                                 import(
-                                    './components/pages/payer/category/category.module'
-                                ).then((m) => m.CategoryPayerModule),
-                        },
-                        {
-                            path: 'uikit',
-                            loadChildren: () =>
-                                import(
-                                    './demo/components/uikit/uikit.module'
-                                ).then((m) => m.UikitModule),
-                        },
-                        {
-                            path: 'utilities',
-                            loadChildren: () =>
-                                import(
-                                    './demo/components/utilities/utilities.module'
-                                ).then((m) => m.UtilitiesModule),
-                        },
-                        {
-                            path: 'documentation',
-                            loadChildren: () =>
-                                import(
-                                    './demo/components/documentation/documentation.module'
-                                ).then((m) => m.DocumentationModule),
-                        },
-                        {
-                            path: 'blocks',
-                            loadChildren: () =>
-                                import(
-                                    './demo/components/primeblocks/primeblocks.module'
-                                ).then((m) => m.PrimeBlocksModule),
-                        },
-                        {
-                            path: 'pages',
-                            loadChildren: () =>
-                                import(
-                                    './demo/components/pages/pages.module'
-                                ).then((m) => m.PagesModule),
+                                    './components/pages/payer/company/company.module'
+                                ).then((m) => m.CompanyProviderModule),
                         },
                     ],
                 },

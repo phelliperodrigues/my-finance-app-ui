@@ -12,12 +12,6 @@ import { CalendarModule } from 'primeng/calendar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotfoundComponent } from './components/pages/notfound/notfound.component';
-import { CountryService } from './demo/service/country.service';
-import { CustomerService } from './demo/service/customer.service';
-import { EventService } from './demo/service/event.service';
-import { IconService } from './demo/service/icon.service';
-import { NodeService } from './demo/service/node.service';
-import { PhotoService } from './demo/service/photo.service';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { DashboardService } from './service/dashboard/dashboard-service';
 import { ExpenseService } from './service/launch/expense.service';
@@ -48,12 +42,6 @@ registerLocaleData(localePT);
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        CountryService,
-        CustomerService,
-        EventService,
-        IconService,
-        NodeService,
-        PhotoService,
         ProductService,
         CalendarModule,
         DashboardService,

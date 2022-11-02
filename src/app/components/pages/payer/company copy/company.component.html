@@ -1,0 +1,263 @@
+<div class="grid">
+    <div class="col-12 mt-3" style="padding: 0rem;">
+        <div class="card" style="padding-left: 1rem; padding-right: 1rem;">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+         
+                    <div class="my-2">
+                        
+                        <button
+                            pButton
+                            pRipple
+                            icon="pi pi-refresh"
+                            class="p-button-info mr-2"
+                            (click)="reset()"
+                        ></button>
+
+                        <button
+                            pButton
+                            pRipple
+                            label="Adicionar"
+                            icon="pi pi-plus"
+                            class="p-button-success mr-2"
+                            (click)="openNew()"
+                        ></button>
+                        <button
+                            pButton
+                            pRipple
+                            label="Deletar"
+                            icon="pi pi-trash"
+                            class="p-button-danger"
+                            (click)="deleteSelected()"
+                            [disabled]="
+                                !selected || !selected.length
+                            "
+                        ></button>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+            <p-table
+                #dt
+                [value]="companies"
+                [columns]="cols"
+                responsiveLayout="stack"
+                [rows]="10"
+                [globalFilterFields]="[
+                    'name'
+                ]"
+                [rows]="10"
+                [paginator]="true"
+                [rowsPerPageOptions]="[10, 20, 30]"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Exibindo {first} à {last} de {totalRecords} fornecedores"
+                [(selection)]="selected"
+                selectionMode="multiple"
+                [rowHover]="true"
+                dataKey="id"
+            >
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+                    >
+                        <h3 class="m-0">Cadastro de Fornecedores</h3>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="onGlobalFilter(dt, $event)"
+                                placeholder="Pesquisar..."
+                                class="w-full sm:w-auto"
+                            />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="name">
+                            Nome <p-sortIcon field="name"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="description">
+                            Descrição <p-sortIcon field="description"></p-sortIcon>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-company>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox
+                                [value]="company"
+                            ></p-tableCheckbox>
+                        </td>
+                        <td style="width: 45%; min-width: 10rem">
+                            <span class="p-column-title">Nome</span>
+                            {{ company.name }}
+                        </td>
+                        <td style="width: 40%; min-width: 10rem">
+                            <span class="p-column-title">Descrição</span>
+                            {{ company.description }}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-help mr-2"
+                                    (click)="edit(company)"
+                                ></button>
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-trash"
+                                    class="p-button-rounded p-button-warning"
+                                    (click)="delete(company)"
+                                ></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog
+            [(visible)]="companyDialog"
+            [style]="{ width: '450px' }"
+            header="Fornecedor"
+            [modal]="true"
+            class="p-fluid"
+        >
+            <ng-template pTemplate="content">
+
+                <div class="field">
+                    <label for="name">Nome</label>
+                    <input
+                        type="text"
+                        pInputText
+                        id="name"
+                        [(ngModel)]="company.name"
+                        required
+                        autofocus
+                        [ngClass]="{
+                            'ng-invalid ng-dirty': submitted && !company.name
+                        }"
+                    />
+                    <small
+                        class="ng-dirty ng-invalid"
+                        *ngIf="submitted && !company.name"
+                        >Nome é obrigatório.</small
+                    >
+                </div>
+                <div class="field">
+                    <label for="name">Descrição</label>
+                    <input
+                        type="text"
+                        pInputText
+                        id="description"
+                        [(ngModel)]="company.description"
+                        autofocus
+                    />
+                    
+                </div>
+                
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button
+                    pButton
+                    pRipple
+                    label="Cancelar"
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    (click)="hideDialog()"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    label="Salvar"
+                    icon="pi pi-check"
+                    class="p-button-text"
+                    (click)="save()"
+                ></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog
+            [(visible)]="deleteCompanyDialog"
+            header="Confirm"
+            [modal]="true"
+            [style]="{ width: '450px' }"
+        >
+            <div class="flex align-items-center justify-content-center">
+                <i
+                    class="pi pi-exclamation-triangle mr-3"
+                    style="font-size: 2rem"
+                ></i>
+                <span *ngIf="company"
+                    >Tem certeza de que deseja excluir <b>{{ company.name }}</b
+                    >?</span
+                >
+            </div>
+            <ng-template pTemplate="footer">
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    label="Não"
+                    (click)="deleteDialog = false"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-check"
+                    class="p-button-text"
+                    label="Sim"
+                    (click)="confirmDelete()"
+                ></button>
+            </ng-template>
+        </p-dialog>
+
+
+        <p-dialog
+            [(visible)]="deleteDialog"
+            header="Confirm"
+            [modal]="true"
+            [style]="{ width: '450px' }"
+        >
+            <div class="flex align-items-center justify-content-center">
+                <i
+                    class="pi pi-exclamation-triangle mr-3"
+                    style="font-size: 2rem"
+                ></i>
+                <span
+                    >Tem certeza de que deseja excluir os fornecedores
+                    selecionadas?</span
+                >
+            </div>
+            <ng-template pTemplate="footer">
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    label="Não"
+                    (click)="deleteDialog = false"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-check"
+                    class="p-button-text"
+                    label="Sim"
+                    (click)="confirmDeleteSelected()"
+                ></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>
