@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CategotyProviderComponent } from './category.component';
+import { CategoryProviderComponent } from './category.component';
 
 @NgModule({
     imports: [
         RouterModule.forChild([
-            { path: '', component: CategotyProviderComponent },
+            { path: '', component: CategoryProviderComponent },
         ]),
     ],
     exports: [RouterModule],

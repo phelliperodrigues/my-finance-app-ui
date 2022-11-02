@@ -24,6 +24,7 @@ import { ExpenseService } from './service/launch/expense.service';
 import { RevenueService } from './service/launch/revenue.service';
 import { CompanyPaymentService } from './service/payer/company.payer.service';
 import { ProductService } from './service/product.service';
+import { CategoryProviderService } from './service/provider/category.service';
 import { CompanyProviderService } from './service/provider/company.service';
 import { DebitService } from './service/provider/debit.service';
 
@@ -61,6 +62,7 @@ registerLocaleData(localePT);
         ExpenseService,
         CompanyPaymentService,
         DebitService,
+        CategoryProviderService,
         { provide: LOCALE_ID, useValue: 'pt-br' },
     ],
     bootstrap: [AppComponent],

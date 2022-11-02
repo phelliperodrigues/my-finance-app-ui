@@ -1,173 +1,208 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/service/product.service';
-
+import { CategoryProvider } from 'src/app/model/provider/category';
+import { CategoryProviderService } from 'src/app/service/provider/category.service';
 @Component({
     templateUrl: './category.component.html',
     providers: [MessageService],
 })
-export class CategotyProviderComponent implements OnInit {
-    productDialog: boolean = false;
+export class CategoryProviderComponent implements OnInit {
+    companyDialog: boolean = false;
+    deleteCompanyDialog: boolean = false;
+    deleteDialog: boolean = false;
 
-    deleteProductDialog: boolean = false;
+    registers: CategoryProvider[] = [];
+    register: CategoryProvider = {};
 
-    deleteProductsDialog: boolean = false;
-
-    products: Product[] = [];
-
-    product: Product = {};
-
-    selectedProducts: Product[] = [];
+    selected: CategoryProvider[] = [];
 
     submitted: boolean = false;
 
     cols: any[] = [];
 
-    statuses: any[] = [];
-
     rowsPerPageOptions = [5, 10, 20];
 
     constructor(
-        private productService: ProductService,
+        private companyService: CategoryProviderService,
         private messageService: MessageService
     ) {}
 
     ngOnInit() {
-        this.productService
-            .getProducts()
-            .then((data) => (this.products = data));
+        this.companyService.getAll().then((data) => (this.registers = data));
 
         this.cols = [
-            { field: 'product', header: 'Product' },
-            { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' },
-            { field: 'rating', header: 'Reviews' },
-            { field: 'inventoryStatus', header: 'Status' },
+            { field: 'name', header: 'Nome' },
+            { field: 'description', header: 'Descrição' },
         ];
+    }
 
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' },
-        ];
+    reset() {
+        this.registers = [];
+        this.companyService.getAll().then((data) => (this.registers = data));
     }
 
     openNew() {
-        this.product = {};
+        this.register = {};
         this.submitted = false;
-        this.productDialog = true;
+        this.companyDialog = true;
     }
 
-    deleteSelectedProducts() {
-        this.deleteProductsDialog = true;
+    deleteSelected() {
+        this.deleteDialog = true;
     }
 
-    editProduct(product: Product) {
-        this.product = { ...product };
-        this.productDialog = true;
+    edit(company: CategoryProvider) {
+        this.register = { ...company };
+
+        this.companyDialog = true;
     }
 
-    deleteProduct(product: Product) {
-        this.deleteProductDialog = true;
-        this.product = { ...product };
+    delete(company: CategoryProvider) {
+        this.deleteCompanyDialog = true;
+        this.register = { ...company };
+    }
+
+    private update(company: CategoryProvider) {
+        this.companyService
+            .update(company.id, company)
+            .then((data) => {
+                this.registers = this.registers.map((val) => {
+                    if (val.id === data.id) {
+                        return data;
+                    }
+                    return val;
+                });
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Registro atualizado',
+                    life: 3000,
+                });
+            })
+            .catch(() => {
+                console.error('');
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Erro ao alterar o registro',
+                    life: 3000,
+                });
+            });
     }
 
     confirmDeleteSelected() {
-        this.deleteProductsDialog = false;
-        this.products = this.products.filter(
-            (val) => !this.selectedProducts.includes(val)
+        alert('aaa');
+        this.deleteDialog = false;
+        this.companyService
+            .deleteAll(this.selected)
+            .then(() => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Registroes  deletados',
+                    life: 3000,
+                });
+            })
+            .catch(() => {
+                console.error('');
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Erro ao deletar registros selecionados',
+                    life: 3000,
+                });
+            });
+        this.registers = this.registers.filter(
+            (val) => !this.selected.includes(val)
         );
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Products Deleted',
-            life: 3000,
-        });
-        this.selectedProducts = [];
+        this.selected = [];
     }
 
     confirmDelete() {
-        this.deleteProductDialog = false;
-        this.products = this.products.filter(
-            (val) => val.id !== this.product.id
+        this.deleteCompanyDialog = false;
+        this.companyService
+            .delete(this.register.id!)
+            .then(() => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Registro deletado',
+                    life: 3000,
+                });
+            })
+            .catch(() => {
+                console.error('');
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Erro ao deletar o registro',
+                    life: 3000,
+                });
+            });
+        this.registers = this.registers.filter(
+            (val) => val.id !== this.register.id
         );
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Product Deleted',
-            life: 3000,
-        });
-        this.product = {};
+
+        this.register = {};
     }
 
     hideDialog() {
-        this.productDialog = false;
+        this.companyDialog = false;
         this.submitted = false;
     }
 
-    saveProduct() {
+    save() {
         this.submitted = true;
 
-        if (this.product.name?.trim()) {
-            if (this.product.id) {
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus
-                    .value
-                    ? this.product.inventoryStatus.value
-                    : this.product.inventoryStatus;
-                this.products[this.findIndexById(this.product.id)] =
-                    this.product;
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Updated',
-                    life: 3000,
-                });
+        if (this.register.name?.trim()) {
+            if (this.register.id) {
+                this.update(this.register);
             } else {
-                this.product.id = this.createId();
-                this.product.code = this.createId();
-                this.product.image = 'product-placeholder.svg';
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus
-                    ? this.product.inventoryStatus.value
-                    : 'INSTOCK';
-                this.products.push(this.product);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Created',
-                    life: 3000,
-                });
+                this.companyService
+                    .create(this.register)
+                    .then((data) => {
+                        this.registers = this.registers.map((val) => {
+                            if (val.id === data.id) {
+                                return data;
+                            }
+                            return val;
+                        });
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Sucesso',
+                            detail: 'Registro criado',
+                            life: 3000,
+                        });
+                    })
+                    .catch(() => {
+                        console.error('');
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Erro',
+                            detail: 'Erro ao criar o registro',
+                            life: 3000,
+                        });
+                    });
+                this.registers.push(this.register);
             }
 
-            this.products = [...this.products];
-            this.productDialog = false;
-            this.product = {};
+            this.registers = [...this.registers];
+            this.companyDialog = false;
+            this.register = {};
         }
     }
 
     findIndexById(id: string): number {
         let index = -1;
-        for (let i = 0; i < this.products.length; i++) {
-            if (this.products[i].id === id) {
+        for (let i = 0; i < this.registers.length; i++) {
+            if (this.registers[i].id === id) {
                 index = i;
                 break;
             }
         }
 
         return index;
-    }
-
-    createId(): string {
-        let id = '';
-        const chars =
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
     }
 
     onGlobalFilter(table: Table, event: Event) {

@@ -15,7 +15,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { CategotyProviderRoutingModule } from './category-routing.module';
-import { CategotyProviderComponent } from './category.component';
+import { CategoryProviderComponent } from './category.component';
 
 @NgModule({
     imports: [
@@ -36,6 +36,6 @@ import { CategotyProviderComponent } from './category.component';
         InputNumberModule,
         DialogModule,
     ],
-    declarations: [CategotyProviderComponent],
+    declarations: [CategoryProviderComponent],
 })
 export class CategoryProviderModule {}
