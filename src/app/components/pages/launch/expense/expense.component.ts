@@ -1,9 +1,11 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { StatusLaunch } from 'src/app/model/enum/status-launch';
 import { Expense } from 'src/app/model/launch/expense';
+import { ExpenseSearch } from 'src/app/model/launch/searsh/expense-search';
 import { CompanyProvider } from 'src/app/model/provider/company';
 import { ExpenseService } from 'src/app/service/launch/expense.service';
 import { CompanyProviderService } from 'src/app/service/payer/company.service';
@@ -19,7 +21,8 @@ export class ExpenseComponent implements OnInit {
     cloneDialog: boolean = false;
     deleteExpensesDialog: boolean = false;
 
-    expenses: Expense[] = [];
+    expenses: ExpenseSearch[] = [];
+    expenseSearch: ExpenseSearch = {};
     expense: Expense = {};
 
     selectedExpenses: Expense[] = [];
@@ -42,7 +45,8 @@ export class ExpenseComponent implements OnInit {
     constructor(
         private expenseService: ExpenseService,
         private messageService: MessageService,
-        private companyService: CompanyProviderService
+        private companyService: CompanyProviderService,
+        private clipBoard: Clipboard
     ) {}
 
     private getNextMonth(): Date {
@@ -51,14 +55,15 @@ export class ExpenseComponent implements OnInit {
 
     ngOnInit() {
         this.companyService.getAll().then((data) => (this.companies = data));
-
-        this.expenseService
-            .getAll(this.monthDate)
-            .then((data) => (this.expenses = data));
+        this.expenseService.getAllDebits().then((data) => (this.debits = data));
+        this.expenseService.getAll(this.monthDate).then((data) => {
+            this.expenses = data;
+        });
 
         this.cols = [
-            { field: 'name', header: 'Nome' },
+            { field: 'debit.name', header: 'Nome' },
             { field: 'company.name', header: 'Origem' },
+            { field: 'installment', header: 'Parcela' },
             { field: 'dueDate', header: 'Data Vencimento' },
             { field: 'paymentDate', header: 'Data Pagamento' },
             { field: 'value', header: 'Valor' },
@@ -89,6 +94,8 @@ export class ExpenseComponent implements OnInit {
     }
 
     editExpense(expense: Expense) {
+        console.log(expense);
+
         expense.dueDate = new Date(
             moment(expense.dueDate).format('MM/DD/YYYY')
         );
@@ -144,7 +151,6 @@ export class ExpenseComponent implements OnInit {
         this.expense.paymentDate = this.payDate;
         this.update(expense);
         this.expenses = [...this.expenses];
-        console.log(this.expense);
 
         this.expense = {};
         this.payDate = new Date();
@@ -235,6 +241,7 @@ export class ExpenseComponent implements OnInit {
     }
 
     hideDialog() {
+        this.editing = false;
         this.expenseDialog = false;
         this.submitted = false;
     }
@@ -319,5 +326,17 @@ export class ExpenseComponent implements OnInit {
 
     private getLastDay(year: number, month: number) {
         return new Date(year, month + 1, 0).getDate();
+    }
+
+    sumTotal() {
+        return this.expenses.reduce<number>((accumulator, expense) => {
+            return accumulator + (expense.value ? expense.value : 0);
+        }, 0);
+    }
+
+    copyBarCode() {
+        if (this.expense.barCode) {
+            this.clipBoard.copy(this.expense.barCode);
+        }
     }
 }

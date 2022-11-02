@@ -82,12 +82,16 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="name">
-                            Nome <p-sortIcon field="name"></p-sortIcon>
+                        <th pSortableColumn="debit.name">
+                            Nome <p-sortIcon field="debit.name"></p-sortIcon>
                         </th>
                         <th pSortableColumn="company.name">
                             Origem
                             <p-sortIcon field="company.name"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="installment">
+                            Parcela
+                            <p-sortIcon field="installment"></p-sortIcon>
                         </th>
                         <th pSortableColumn="dueDate">
                             Data Vencimento
@@ -102,7 +106,6 @@
                         </th>
                         <th pSortableColumn="status">
                             Status
-                            <p-sortIcon field="status"></p-sortIcon>
                         </th>
                         <th></th>
                     </tr>
@@ -116,11 +119,15 @@
                         </td>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Nome</span>
-                            {{ expense.name }}
+                            {{ expense.debit.name }}
                         </td>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Origem</span>
                             {{ expense.company.name }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Parcela</span>
+                            {{ expense.installment }}
                         </td>
                         <td style="width: 14%; min-width: 8rem">
                             <span class="p-column-title">Data Vencimento </span>
@@ -180,6 +187,14 @@
                             </div>
                         </td>
                     </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="flex align-items-center justify-content-between">
+                        Total de lançamentos: {{expenses ? expenses.length : 0 }}
+                    </div>
+                    <div class="flex align-items-center justify-content-between">
+                        Valor total laçamentos: {{sumTotal()  | currency: "BRL":true:"1.2-2" }}
+                    </div>
                 </ng-template>
             </p-table>
         </div>
@@ -259,7 +274,7 @@
                         [(ngModel)]="expense.barCode"
                         required
                     />
-                    <button type="button" pButton pRipple icon="pi pi-copy" styleClass="p-button-warn"></button>      
+                    <button type="button" pButton pRipple icon="pi pi-copy" styleClass="p-button-warn" (click)="copyBarCode()" ></button>
                     </div>
                     
                 </div>
@@ -276,7 +291,7 @@
                 </div>
                 <div class="formgrid grid" *ngIf="!editing">
                     <div class="field col">
-                        <label for="isRecurrent">Recebimento Mensal?</label>
+                        <label for="isRecurrent">Pagamento Mensal?</label>
                         <br />
                         <p-inputSwitch
                             id="isRecurrent"
@@ -633,7 +648,7 @@
                 icon="pi pi-times"
                 class="p-button-text"
                 label="Não"
-                (click)="payDialog = false"
+                (click)="cloneDialog = false"
             ></button>
             <button
                 pButton

@@ -320,4 +320,13 @@ export class RevenueComponent implements OnInit {
     private getLastDay(year: number, month: number) {
         return new Date(year, month + 1, 0).getDate();
     }
+
+    sumTotal() {
+        let result = this.revenues.reduce<number>((accumulator, revenue) => {
+            return accumulator + (revenue.value ? revenue.value : 0);
+        }, 0);
+        console.log(result);
+
+        return result;
+    }
 }

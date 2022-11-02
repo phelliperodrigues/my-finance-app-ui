@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Revenue } from 'src/app/model/launch/revenue';
+
 @Injectable()
 export class RevenueService {
     constructor(private http: HttpClient) {}

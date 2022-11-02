@@ -181,6 +181,14 @@
                         </td>
                     </tr>
                 </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="flex align-items-center justify-content-between">
+                        Total de lançamentos: {{revenues ? revenues.length : 0 }}
+                    </div>
+                    <div class="flex align-items-center justify-content-between">
+                        Valor total laçamentos: {{sumTotal()  | currency: "BRL":true:"1.2-2" }}
+                    </div>
+                </ng-template>
             </p-table>
         </div>
 
@@ -609,7 +617,7 @@
                 icon="pi pi-times"
                 class="p-button-text"
                 label="Não"
-                (click)="payDialog = false"
+                (click)="cloneDialog = false"
             ></button>
             <button
                 pButton
