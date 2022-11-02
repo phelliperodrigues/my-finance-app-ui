@@ -23,8 +23,8 @@ import { DashboardService } from './service/dashboard/dashboard-service';
 import { ExpenseService } from './service/launch/expense.service';
 import { RevenueService } from './service/launch/revenue.service';
 import { CompanyPaymentService } from './service/payer/company.payer.service';
-import { CompanyProviderService } from './service/payer/company.service';
 import { ProductService } from './service/product.service';
+import { CompanyProviderService } from './service/provider/company.service';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');

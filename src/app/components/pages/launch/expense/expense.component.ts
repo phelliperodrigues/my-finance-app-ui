@@ -8,7 +8,7 @@ import { Expense } from 'src/app/model/launch/expense';
 import { ExpenseSearch } from 'src/app/model/launch/searsh/expense-search';
 import { CompanyProvider } from 'src/app/model/provider/company';
 import { ExpenseService } from 'src/app/service/launch/expense.service';
-import { CompanyProviderService } from 'src/app/service/payer/company.service';
+import { CompanyProviderService } from 'src/app/service/provider/company.service';
 
 @Component({
     templateUrl: './expense.component.html',

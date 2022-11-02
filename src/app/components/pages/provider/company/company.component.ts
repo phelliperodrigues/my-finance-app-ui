@@ -1,173 +1,207 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/service/product.service';
-
+import { CompanyProvider } from 'src/app/model/provider/company';
+import { CompanyProviderService } from 'src/app/service/provider/company.service';
 @Component({
     templateUrl: './company.component.html',
     providers: [MessageService],
 })
 export class CompanyProviderComponent implements OnInit {
-    productDialog: boolean = false;
+    companyDialog: boolean = false;
+    deleteCompanyDialog: boolean = false;
+    deleteDialog: boolean = false;
 
-    deleteProductDialog: boolean = false;
+    companies: CompanyProvider[] = [];
+    company: CompanyProvider = {};
 
-    deleteProductsDialog: boolean = false;
-
-    products: Product[] = [];
-
-    product: Product = {};
-
-    selectedProducts: Product[] = [];
+    selected: CompanyProvider[] = [];
 
     submitted: boolean = false;
 
     cols: any[] = [];
 
-    statuses: any[] = [];
-
     rowsPerPageOptions = [5, 10, 20];
 
     constructor(
-        private productService: ProductService,
+        private companyService: CompanyProviderService,
         private messageService: MessageService
     ) {}
 
     ngOnInit() {
-        this.productService
-            .getProducts()
-            .then((data) => (this.products = data));
+        this.companyService.getAll().then((data) => (this.companies = data));
 
         this.cols = [
-            { field: 'product', header: 'Product' },
-            { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' },
-            { field: 'rating', header: 'Reviews' },
-            { field: 'inventoryStatus', header: 'Status' },
+            { field: 'name', header: 'Nome' },
+            { field: 'description', header: 'Descrição' },
         ];
+    }
 
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' },
-        ];
+    reset() {
+        this.companyService.getAll().then((data) => (this.companies = data));
     }
 
     openNew() {
-        this.product = {};
+        this.company = {};
         this.submitted = false;
-        this.productDialog = true;
+        this.companyDialog = true;
     }
 
-    deleteSelectedProducts() {
-        this.deleteProductsDialog = true;
+    deleteSelected() {
+        this.deleteDialog = true;
     }
 
-    editProduct(product: Product) {
-        this.product = { ...product };
-        this.productDialog = true;
+    edit(company: CompanyProvider) {
+        this.company = { ...company };
+
+        this.companyDialog = true;
     }
 
-    deleteProduct(product: Product) {
-        this.deleteProductDialog = true;
-        this.product = { ...product };
+    delete(company: CompanyProvider) {
+        this.deleteCompanyDialog = true;
+        this.company = { ...company };
+    }
+
+    private update(company: CompanyProvider) {
+        this.companyService
+            .update(company.id, company)
+            .then((data) => {
+                this.companies = this.companies.map((val) => {
+                    if (val.id === data.id) {
+                        return data;
+                    }
+                    return val;
+                });
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Fornecedor atualizado',
+                    life: 3000,
+                });
+            })
+            .catch(() => {
+                console.error('');
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Erro ao alterar a fornecedor',
+                    life: 3000,
+                });
+            });
     }
 
     confirmDeleteSelected() {
-        this.deleteProductsDialog = false;
-        this.products = this.products.filter(
-            (val) => !this.selectedProducts.includes(val)
+        alert('aaa');
+        this.deleteDialog = false;
+        this.companyService
+            .deleteAll(this.selected)
+            .then(() => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Fornecedores  deletados',
+                    life: 3000,
+                });
+            })
+            .catch(() => {
+                console.error('');
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Erro ao deletar as fornecedores  selecionados',
+                    life: 3000,
+                });
+            });
+        this.companies = this.companies.filter(
+            (val) => !this.selected.includes(val)
         );
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Products Deleted',
-            life: 3000,
-        });
-        this.selectedProducts = [];
+        this.selected = [];
     }
 
     confirmDelete() {
-        this.deleteProductDialog = false;
-        this.products = this.products.filter(
-            (val) => val.id !== this.product.id
+        this.deleteCompanyDialog = false;
+        this.companyService
+            .delete(this.company.id!)
+            .then(() => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Sucesso',
+                    detail: 'Fornecedor deletado',
+                    life: 3000,
+                });
+            })
+            .catch(() => {
+                console.error('');
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro',
+                    detail: 'Erro ao deletar a fornecedor',
+                    life: 3000,
+                });
+            });
+        this.companies = this.companies.filter(
+            (val) => val.id !== this.company.id
         );
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Product Deleted',
-            life: 3000,
-        });
-        this.product = {};
+
+        this.company = {};
     }
 
     hideDialog() {
-        this.productDialog = false;
+        this.companyDialog = false;
         this.submitted = false;
     }
 
-    saveProduct() {
+    save() {
         this.submitted = true;
 
-        if (this.product.name?.trim()) {
-            if (this.product.id) {
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus
-                    .value
-                    ? this.product.inventoryStatus.value
-                    : this.product.inventoryStatus;
-                this.products[this.findIndexById(this.product.id)] =
-                    this.product;
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Updated',
-                    life: 3000,
-                });
+        if (this.company.name?.trim()) {
+            if (this.company.id) {
+                this.update(this.company);
             } else {
-                this.product.id = this.createId();
-                this.product.code = this.createId();
-                this.product.image = 'product-placeholder.svg';
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus
-                    ? this.product.inventoryStatus.value
-                    : 'INSTOCK';
-                this.products.push(this.product);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Created',
-                    life: 3000,
-                });
+                this.companyService
+                    .create(this.company)
+                    .then((data) => {
+                        this.companies = this.companies.map((val) => {
+                            if (val.id === data.id) {
+                                return data;
+                            }
+                            return val;
+                        });
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Sucesso',
+                            detail: 'Fornecedor criada',
+                            life: 3000,
+                        });
+                    })
+                    .catch(() => {
+                        console.error('');
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Erro',
+                            detail: 'Erro ao criar a fornecedor',
+                            life: 3000,
+                        });
+                    });
+                this.companies.push(this.company);
             }
 
-            this.products = [...this.products];
-            this.productDialog = false;
-            this.product = {};
+            this.companies = [...this.companies];
+            this.companyDialog = false;
+            this.company = {};
         }
     }
 
     findIndexById(id: string): number {
         let index = -1;
-        for (let i = 0; i < this.products.length; i++) {
-            if (this.products[i].id === id) {
+        for (let i = 0; i < this.companies.length; i++) {
+            if (this.companies[i].id === id) {
                 index = i;
                 break;
             }
         }
 
         return index;
-    }
-
-    createId(): string {
-        let id = '';
-        const chars =
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
     }
 
     onGlobalFilter(table: Table, event: Event) {
